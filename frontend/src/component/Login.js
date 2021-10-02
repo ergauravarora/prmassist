@@ -80,39 +80,8 @@ const Login = () => {
     }
       })
       .catch(async (error) => {
-
-        //Seprate call just in case user has updated user id or password 
-        var data =await fetch(`${ApiUrl}/Login`,{
-          method:'POST',
-          body:JSON.stringify({email:email,password:password}),
-          headers: new Headers({'content-type': 'application/json'})
-        })
-
-        if (data.ok) {
-          var d =  await data.json();
-          if(d.data)
-          {
-            if(!d.data.isVarified)
-            {
-              setAlertMessage("User is not yet Approved")
-              setisLoaderVisible(true)
-              localStorage.clear();
-              fire.auth().signOut();
-              sessionStorage.clear();
-            }
-            else
-            {
-              setContextValue({uid:d.data.uid})
-              localStorage.setItem("IsLoggedIn",true)
-              localStorage.setItem("contextValue",JSON.stringify({uid:d.data.uid}))
-              setIsLoggedIn(true);
-              setisLoaderVisible(false)
-              history.push('/Dashboard')
-            }
-          }    
          setAlertMessage(error.message)
          console.error(error);
-      }
     });
   };
  
