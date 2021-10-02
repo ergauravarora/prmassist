@@ -207,5 +207,6 @@ const postGetUserById = async (req, res, next) => {
             }
           };
   
+          const FileUpload =  UserService.upload
 
-export default {postUserLogin,postFileUpload,postReportBug,postChangeEmail,postChangePassword,postGetUserById,postRegisterUser,postVerifyRegisterUser,getAllUser,postDenyRegisterUser}
+export default {FileUpload,postUserLogin,postFileUpload,postReportBug,postChangeEmail,postChangePassword,postGetUserById,postRegisterUser,postVerifyRegisterUser,getAllUser,postDenyRegisterUser}

@@ -87,7 +87,7 @@ function App() {
         <LoaderComponent />
         <CustomizedSnackbars />
           {!isLoggedIn ? (
-            <>
+            <React.Fragment>
                 {/* <Route path="*" exact={true}>
                 <Redirect to={'/'} />
               </Route> */}
@@ -100,9 +100,9 @@ function App() {
                 <Route path="/ForgetPassword" exact={true}>
                   <ForgetPassword />
                 </Route>
-            </>
+            </React.Fragment>
           ) : (
-            <>
+            <React.Fragment>
                 <Route path="/Dashboard" exact={true}>
                   <Dashboard children={<Orders />} />
                 </Route>
@@ -118,7 +118,7 @@ function App() {
                 <Route path="/ReportBug" exact={true}>
                   <Dashboard children={<ReportBug />} />
                 </Route>
-            </>
+            </React.Fragment>
           )}
           {!isAdminLoggedin ? (
               <Route path="/AdminLogin" exact={true}>

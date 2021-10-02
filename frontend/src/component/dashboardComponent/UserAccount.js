@@ -31,7 +31,7 @@ function UserAccount() {
       var d =  await data.json();  
       
       setCurrentUserData({
-        dateCreated:contextValue?.metadata?.creationTime || "Not Available",
+        dateCreated:contextValue && contextValue.metadata && contextValue.metadata.creationTime || "Not Available",
         email:d.data.email,
         firstName:d.data.firstName,
         lastName:d.data.lastName,

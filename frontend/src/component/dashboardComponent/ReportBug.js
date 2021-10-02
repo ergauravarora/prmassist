@@ -176,7 +176,7 @@ const handleSubmit = async ()=>{
           </Grid>
           <Grid xs={4} item>
             {
-              TempImage ?<img src={TempImage} height="151px" width="166px" alt="Temp Image" style={{textAlign: "center",padding: "50px 20px",color: "#317de5",border: "1px solid #317de5",float: "right"}} />:<>
+              TempImage ?<img src={TempImage} height="151px" width="166px" alt="Temp Image" style={{textAlign: "center",padding: "50px 20px",color: "#317de5",border: "1px solid #317de5",float: "right"}} />:<React.Fragment>
               <input
               accept="image/*"
               //className={classes.input}
@@ -202,7 +202,7 @@ const handleSubmit = async ()=>{
                 (optional)
               </Button>
             </label>
-              </>
+              </React.Fragment>
             }
             
            </Grid>

@@ -145,9 +145,6 @@ const ReportBugAsync =async (body) =>{
         
 } 
 
-var fileName = "false"
-const maxSize = 1 * 1000 * 1000;
-
 const upload = multer({ 
   storage:  multer.diskStorage({
     destination: function (req, file, cb) {
@@ -156,11 +153,10 @@ const upload = multer({
         cb(null, "Upload")
     },
     filename: function (req, file, cb) {
-      fileName =file.originalname + "-" + Date.now()+".jpg" 
-      cb(null, fileName)
+      cb(null, file.originalname + "-" + Date.now()+".jpg")
     }
   }),
-  limits: { fileSize: maxSize },
+  limits: { fileSize: 20 * 1000 * 1000 },
   fileFilter: function (req, file, cb){
   
       // Set the filetypes, it is optional
@@ -182,20 +178,12 @@ const upload = multer({
 // mypic is the name of file attribute
 }).single("image"); 
 
+
 const FileUploadAync = async(req,res)=>{
-await upload(req,res,function(err) {
-        if(err) {
-           return err;
-        }
-        else {
-          return "success";
-        }
-    })
-    return fileName;
-   
+  return req.file.filename 
 }
 
 const LoginAsync =async (body) =>{ 
   return fa.Login(body);        
 }  
-export default {LoginAsync,FileUploadAync,ReportBugAsync,ChangeEmailAsync,ChangePasswordAsync,DenyRegisterUserAsync,GetUserByIdAsync,RegisterUserAsync,VerifyRegisterUserAsync,GetAllUserAsync};
+export default {upload,LoginAsync,FileUploadAync,ReportBugAsync,ChangeEmailAsync,ChangePasswordAsync,DenyRegisterUserAsync,GetUserByIdAsync,RegisterUserAsync,VerifyRegisterUserAsync,GetAllUserAsync};

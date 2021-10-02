@@ -90,27 +90,28 @@ const Login = () => {
 
         if (data.ok) {
           var d =  await data.json();
-            debugger
-          if(!d.data?.isVarified)
+          if(d.data)
           {
-            setAlertMessage("User is not yet Approved")
-            setisLoaderVisible(true)
-            localStorage.clear();
-            fire.auth().signOut();
-            sessionStorage.clear();
-          }
-          else
-          {
-            setContextValue({uid:d.data.uid})
-            localStorage.setItem("IsLoggedIn",true)
-            localStorage.setItem("contextValue",JSON.stringify({uid:d.data.uid}))
-            setIsLoggedIn(true);
-            setisLoaderVisible(false)
-            history.push('/Dashboard')
-          }
-        
-        // setAlertMessage(error.message)
-        // console.error(error);
+            if(!d.data.isVarified)
+            {
+              setAlertMessage("User is not yet Approved")
+              setisLoaderVisible(true)
+              localStorage.clear();
+              fire.auth().signOut();
+              sessionStorage.clear();
+            }
+            else
+            {
+              setContextValue({uid:d.data.uid})
+              localStorage.setItem("IsLoggedIn",true)
+              localStorage.setItem("contextValue",JSON.stringify({uid:d.data.uid}))
+              setIsLoggedIn(true);
+              setisLoaderVisible(false)
+              history.push('/Dashboard')
+            }
+          }    
+         setAlertMessage(error.message)
+         console.error(error);
       }
     });
   };
