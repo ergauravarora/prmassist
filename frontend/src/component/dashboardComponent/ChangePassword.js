@@ -7,6 +7,7 @@ import {FormControl,IconButton,Input,InputAdornment,InputLabel} from "@mui/mater
 import {  Visibility, VisibilityOff } from "@mui/icons-material";
 import { CounterContext } from "../../App";
 import { ApiUrl } from "../../config/config";
+import { auth } from "../../config/fire";
 
 function ChangePassword() {
     const [showCurrentPassword, setshowCurrentPassword] = React.useState(false);
@@ -32,22 +33,39 @@ function ChangePassword() {
         setReNewPassword(null)
         return;
       }
-      var data =await fetch(`${ApiUrl}/ChangePassword`,{
-        method:'POST',
-        body:JSON.stringify({...password,uid:contextValue.uid}),
-        headers: new Headers({'content-type': 'application/json'})
+      debugger
+      auth.onAuthStateChanged(user => {
+        user.updatePassword(reNewPassword).then(res=>{
+          if(res)
+          {
+            console.error(res)
+            setAlertMessage("something went wrong !!!")
+            setPassword({
+              oldPassword:null,
+              newPassword:null
+            })
+              setReNewPassword(null)
+          }
+          else
+          {
+            setAlertMessage("User Password Updated successfully ")
+            setPassword({
+              oldPassword:null,
+              newPassword:null
+            })
+              setReNewPassword(null)
+          }
+        }).catch(error=>{
+          setPassword({
+            oldPassword:null,
+            newPassword:null
+          })
+            setReNewPassword(null)
+          setAlertMessage(error.message)
+          
+        })
       })
-      
-      if (data.ok) {
-      var d =  await data.json();
-
-      setAlertMessage(d.data)
-      setPassword({
-        oldPassword:null,
-        newPassword:null
-      })
-        setReNewPassword(null)
-        }
+   
     }
   return (
     <div>
