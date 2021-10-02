@@ -33,7 +33,6 @@ const sendEmail =async (name,to,body,ScreenShot)=>{
     else
     {
       mailOptions = {
-        from: from,
         to: to, 
         subject: name+' | new Bug Report !',
         text: "Hello" + name,

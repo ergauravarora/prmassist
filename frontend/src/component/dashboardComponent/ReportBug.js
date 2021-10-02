@@ -47,11 +47,13 @@ function ReportBug() {
 //    setAlertMessage("Image Uploaded Sucessfully")
       if(d.data)
       {
+        target.value = ''
         setTempImage(ServerStaticAddress+d.data)
         setBug({...Bug,ScreenShot:ServerStaticAddress+d.data})
       }
       else
       {
+        target.value = ''
         setAlertMessage("Image Uploaded Failed")
       }
     
