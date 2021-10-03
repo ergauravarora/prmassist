@@ -11,6 +11,7 @@ import {  Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link,useHistory } from "react-router-dom";
 import { CounterContext } from "../App.js";
 import { ApiUrl } from "../config/config";
+import { SavePassword } from "../config/utils";
 
 
 const theme = createTheme();
@@ -45,6 +46,7 @@ const Login = () => {
       .signInWithEmailAndPassword(email, password)
       .then(async res=>{
         debugger
+        SavePassword(password);
        // setLoading(false)    
         // fire.auth().onAuthStateChanged((user) => {
     

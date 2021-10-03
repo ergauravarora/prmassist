@@ -8,6 +8,8 @@ import {FormControl,IconButton,Input,InputAdornment,InputLabel} from "@mui/mater
 import {  Visibility, VisibilityOff } from "@mui/icons-material";
 import { CounterContext } from "../../App";
 import { ApiUrl } from "../../config/config";
+import { GetPassword } from "../../config/utils";
+import fire from "../../config/fire";
 
 function ChangeEmail() {
   const {contextValue,setisLoaderVisible,setAlertMessage} = useContext(CounterContext)
@@ -19,6 +21,7 @@ function ChangeEmail() {
   const [reNewEmail, setReNewEmail] = useState();
 
   const handleSubmit =async () => {
+    setisLoaderVisible(true);
     if(reNewEmail !== Email.newEmail)
     {
       setAlertMessage("New and Retyped Email Does't Match")
@@ -29,22 +32,39 @@ function ChangeEmail() {
       setReNewEmail(null)
       return;
     }
-    var data =await fetch(`${ApiUrl}/ChangeEmail`,{
-      method:'POST',
-      body:JSON.stringify({...Email,uid:contextValue.uid}),
-      headers: new Headers({'content-type': 'application/json'})
-    })
-    
-    if (data.ok) {
-    var d =  await data.json();
-
-    setAlertMessage(d.data)
-    setEmail({
-      oldEmail:null,
-      newEmail:null
-    })
-      setReNewEmail(null)
-      }
+   
+    if(contextValue.email === Email.oldEmail)
+    {
+      var credentials = fire.auth.EmailAuthProvider.credential(contextValue.email, GetPassword());
+      contextValue.reauthenticateWithCredential(credentials).then(res=>{
+        if(!res)
+        {
+  
+      contextValue.updateEmail(reNewEmail).then(res=>{
+        if(res)
+        {
+          console.error(res)
+          setAlertMessage("something went wrong !!!")
+        }
+        else
+        {
+          setAlertMessage("User Email Updated successfully ")
+  
+        }
+      })
+      .catch(error=>{
+        setAlertMessage(error.message)
+      })
+    }
+  }).catch(error=>{
+    setAlertMessage(error.message)
+   })
+    }
+    else{
+      setAlertMessage("User Email Doesn't Match")
+    }
+   
+  
   }
   return (
     <div>

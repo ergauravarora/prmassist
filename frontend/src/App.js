@@ -27,7 +27,7 @@ function App() {
   
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdminLoggedin, setIsAdminLoggedin] = useState(false);
-  const [contextValue, setContextValue] = useState({uid:null});
+  const [contextValue, setContextValue] = useState();
   const [isLoaderVisible, setisLoaderVisible] = useState(false);
   const [AlertMessage, setAlertMessage] = useState();
 
@@ -46,6 +46,9 @@ function App() {
   };
 
  
+  fire.auth().onAuthStateChanged(user => {
+    setContextValue(user);
+  })
 
   useEffect(() => {
     var isUser =  JSON.parse(localStorage.getItem("IsLoggedIn"));

@@ -7,6 +7,7 @@ import {FormControl,IconButton,Input,InputAdornment,InputLabel} from "@mui/mater
 import {  Visibility, VisibilityOff } from "@mui/icons-material";
 import { CounterContext } from "../../App";
 import fire from "../../config/fire";
+import { SavePassword } from "../../config/utils";
 
 function ChangePassword() {
     const [showCurrentPassword, setshowCurrentPassword] = React.useState(false);
@@ -33,13 +34,13 @@ function ChangePassword() {
         return;
       }
       debugger
-      var user = fire.auth().currentUser;
-      var credentials = fire.auth.EmailAuthProvider.credential(user.email, password.oldPassword);
-      user.reauthenticateWithCredential(credentials).then(res=>{
+      
+      var credentials = fire.auth.EmailAuthProvider.credential(contextValue.email, password.oldPassword);
+      contextValue.reauthenticateWithCredential(credentials).then(res=>{
         if(!res)
         {
-          fire.auth().onAuthStateChanged(user => {
-            user.updatePassword(reNewPassword).then(res=>{
+          
+          contextValue.updatePassword(reNewPassword).then(res=>{
               if(res)
               {
                 console.error(res)
@@ -52,6 +53,7 @@ function ChangePassword() {
               }
               else
               {
+                SavePassword(reNewPassword);
                 setAlertMessage("User Password Updated successfully ")
                 setPassword({
                   oldPassword:null,
@@ -66,9 +68,8 @@ function ChangePassword() {
               })
                 setReNewPassword(null)
               setAlertMessage(error.message)
-              
             })
-          })
+        
         }
       }).catch(res=>{
 
