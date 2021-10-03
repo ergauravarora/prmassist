@@ -75,7 +75,7 @@ const ReportBugAsync =async (body) =>{
             Title :- ${body.Title} <br/>
             Desciption :- ${body.Description}
                         `
-            var res =await helper.sendEmail(user.firstName,user.email,Emailbody,body.ScreenShot);
+            var res =await helper.sendEmail(user.firstName,body.Email,Emailbody,body.ScreenShot);
             return res;
           }
           })

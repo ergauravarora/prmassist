@@ -114,6 +114,7 @@ const postGetUserById = async (req, res, next) => {
                 Category: Joi.string().required(),
                 Description: Joi.string().required(),
                 ScreenShot: Joi.string().optional(),
+                Email: Joi.string().required()
               });
             
               let {error, value} = schema.validate(body)
