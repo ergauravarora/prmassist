@@ -45,7 +45,7 @@ const sendEmail =async (name,to,body,ScreenShot)=>{
 }
 const handleError = (res,next,msg) => {
    return res.status(200).json({
-      status: "0",
+      status: 0,
       msg : msg || "Failed",
       data : []
     }) &&
@@ -54,7 +54,7 @@ const handleError = (res,next,msg) => {
 
   const handleSuccess = (res,data,next,msg) => {
    return res.status(200).json({
-      status: "1",
+      status: 1,
       msg : msg || "Success",
       data : data
     }) &&
