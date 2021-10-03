@@ -124,7 +124,7 @@ const upload = multer({
 
 
 const FileUploadAync = async(req,res)=>{
-  if(req.file.filename)
+  if(!req.file.filename)
   {
     helper.throwError("File Upload Failed");
   }
