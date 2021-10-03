@@ -40,17 +40,25 @@ export default function SignUp() {
       delete data['email']
       delete data['password']
 
-      var data =await fetch(`${ApiUrl}/RegisterUser`,{
+      var res =await fetch(`${ApiUrl}/RegisterUser`,{
         method:'POST',
         body:JSON.stringify({...data,uid:user.uid}),
         headers: new Headers({'content-type': 'application/json'})
       })
-      if(data.ok)
+      if(res.ok)
       {
-        debugger
-        setisLoaderVisible(false)
-        setAlertMessage("user Registered Success");
-        history.push("/");
+        var data =  res.JSON();
+        if(data.status === 1)
+        {
+          setisLoaderVisible(false)
+          setAlertMessage("user Registered Success");
+          history.push("/");
+        }
+        else
+        {
+          setAlertMessage(data.msg);
+        }
+        
       }
      
         //Here if you want you can sign in the user
