@@ -43,9 +43,7 @@ const postGetUserById = async (req, res, next) => {
     const schema = Joi.object().keys({
       uid: Joi.string().required(),
       firstName:Joi.string().required(),
-      lastName:Joi.string().required(),
-      email:Joi.string().required(),
-      password:Joi.string().required(),
+      lastName:Joi.string().required()
     });
   
     let {error, value} = schema.validate(body)
