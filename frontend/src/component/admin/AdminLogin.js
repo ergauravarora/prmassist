@@ -12,6 +12,7 @@ import { Link,useHistory } from "react-router-dom";
 import { CounterContext } from "../../App.js";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Paper from '@mui/material/Paper';
+import api from "../../config/api";
 
 const theme = createTheme();
 
@@ -38,8 +39,18 @@ const AdminLogin = () => {
         localStorage.clear();
         fire.auth().signOut();
         sessionStorage.clear();
+        
+        var respd = await api.GetTokenAgainstUid({uid:res.uid})
+        console.log(respd)
+        if(respd.status === 200 && respd.data)
+        {
+          localStorage.setItem("accessToken",respd.data.accessToken)
+          localStorage.setItem("refreshToken",respd.data.refreshToken)
+        }
+        
         setIsAdminLoggedin(true);
         setisLoaderVisible(false)
+        
         history.push("/AdminDashboard")
       
       })

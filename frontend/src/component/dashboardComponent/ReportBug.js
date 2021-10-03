@@ -16,6 +16,7 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 import { ApiUrl, ServerStaticAddress } from "../../config/config";
 import { CounterContext } from "../../App";
+import api from "../../config/api";
 
 function ReportBug() {
 
@@ -36,14 +37,10 @@ function ReportBug() {
     setisLoaderVisible(true)
     const formdata =  new FormData();
     formdata.append('image',target.files[0])
-    var data =await fetch(`${ApiUrl}FileUpload`,{
-      method:'POST',
-      body:formdata,
-      //headers: new Headers({"Content-Type": "multipart/form-data;"})
-    })
+    var data =await api.FileUpload(formdata) ;
     
-    if (data.ok) {
-    var d =  await data.json();
+    if (data.data) {
+    var d =  data.data
     setisLoaderVisible(false)
 //    setAlertMessage("Image Uploaded Sucessfully")
       if(d.data)
@@ -67,14 +64,10 @@ const handleSubmit = async ()=>{
     delete Bug['ScreenShot'];
   }
   setisLoaderVisible(true)
-  var data =await fetch(`${ApiUrl}/ReportBug`,{
-    method:'POST',
-    body:JSON.stringify(Bug),
-    headers: new Headers({'content-type': 'application/json'})
-  })
+  var data =await api.ReportBug(Bug);
   
-  if (data.ok) {
-  var d =  await data.json();
+  if (data.data) {
+  var d =  data.data;
 
   if(d.status === 1)
   {

@@ -7,6 +7,7 @@ import EditAttributesOutlined from "@mui/icons-material/EditAttributesOutlined";
 import BugReport from "@mui/icons-material/BugReportOutlined";
 import { useHistory } from 'react-router-dom';
 import { CounterContext } from "../../App";
+import api from "../../config/api";
 
 function UserAccount() {
   const history = useHistory();
@@ -21,14 +22,12 @@ function UserAccount() {
   const FetchData =async () => {
     debugger
     setisLoaderVisible(true)
-    var data =await fetch("http://localhost:8080/api/GetUserById",{
-      method:'POST',
-      body:JSON.stringify({uid:contextValue.uid}),
-      headers: new Headers({'content-type': 'application/json'})
-    })
+   
     
-    if (data.ok) {
-      var d =  await data.json();  
+    var data =  await api.GetUserById({uid:contextValue.uid});
+
+    if (data.data) {
+      var d =  data.data; 
       
       setCurrentUserData({
         dateCreated:contextValue && contextValue.metadata && contextValue.metadata.creationTime || "Not Available",

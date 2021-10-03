@@ -12,6 +12,7 @@ import { Link,useHistory } from "react-router-dom";
 import { CounterContext } from "../App.js";
 import { ApiUrl } from "../config/config";
 import { SavePassword } from "../config/utils";
+import api from "../config/api";
 
 
 const theme = createTheme();
@@ -46,14 +47,20 @@ const Login = () => {
       .signInWithEmailAndPassword(email, password)
       .then(async res=>{
         SavePassword(password);
-        var data =await fetch(`${ApiUrl}/GetUserById`,{
-        method:'POST',
-        body:JSON.stringify({uid:res.uid}),
-        headers: new Headers({'content-type': 'application/json'})
-      })
+        debugger
+
+        var respd = await api.GetTokenAgainstUid({uid:res.uid})
+        console.log(respd)
+        if(respd.status === 200 && respd.data)
+        {
+          localStorage.setItem("accessToken",respd.data.accessToken)
+          localStorage.setItem("refreshToken",respd.data.refreshToken)
+        }
+        
+        var data =  await api.GetUserById({uid:res.uid});
       
-      if (data.ok) {
-      var d =  await data.json();
+      if (data.data) {
+      var d =  data.data;
       debugger
         if(d.status === 1)
         {
@@ -68,7 +75,6 @@ const Login = () => {
           else
           {
             localStorage.setItem("IsLoggedIn",true)
-            localStorage.setItem("contextValue",JSON.stringify(contextValue))
             setIsLoggedIn(true);
             setisLoaderVisible(false)
             history.push('/Dashboard')

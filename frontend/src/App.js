@@ -48,6 +48,7 @@ function App() {
  
   fire.auth().onAuthStateChanged(user => {
     setContextValue(user);
+    localStorage.setItem("contextValue",JSON.stringify(user))
   })
 
   useEffect(() => {

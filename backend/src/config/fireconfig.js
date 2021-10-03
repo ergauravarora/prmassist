@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import * as  dotenv from 'dotenv'
 
 
-const result = dotenv.config({path:'.env'})
+const result = dotenv.config()
 if (result.error) {
   throw result.error
 }

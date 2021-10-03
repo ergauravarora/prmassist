@@ -14,18 +14,17 @@ import {
 } from "@mui/material";
 import { ApiUrl } from "../../config/config";
 import { CounterContext } from "../../App";
+import api from "../../config/api";
 
 function Orders() {
   const [rows, setRows] = React.useState([]);
   const { setAlertMessage } = useContext(CounterContext);
 
   const GetAllUser = async () => {
-    var data = await fetch(`${ApiUrl}/GetAllUser`, {
-      method: "GET",
-    });
+    var data = await api.GetAllUser() ;
 
-    if (data.ok) {
-      var res = await data.json();
+    if (data.data) {
+      var res = data.data;
       var datas = Object.entries(res.data).map((e) => e[1]);
       setRows(datas);
     }
