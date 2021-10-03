@@ -36,9 +36,13 @@ export default function SignUp() {
       .then(async function(user){
         console.log('uid',user)
       //alert(user.uid)
+      var data = {...form}
+      delete data['email']
+      delete data['password']
+
       var data =await fetch(`${ApiUrl}/RegisterUser`,{
         method:'POST',
-        body:JSON.stringify({...form,uid:user.uid}),
+        body:JSON.stringify({...data,uid:user.uid}),
         headers: new Headers({'content-type': 'application/json'})
       })
       if(data.ok)
