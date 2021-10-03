@@ -45,15 +45,7 @@ const Login = () => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(async res=>{
-        debugger
         SavePassword(password);
-       // setLoading(false)    
-        // fire.auth().onAuthStateChanged((user) => {
-    
-      setContextValue({uid:res.uid});
-    //  localStorage.setItem("contextValue",JSON.stringify({uid:res.uid}))
-    
-  // });
         var data =await fetch(`${ApiUrl}/GetUserById`,{
         method:'POST',
         body:JSON.stringify({uid:res.uid}),
@@ -76,7 +68,7 @@ const Login = () => {
           else
           {
             localStorage.setItem("IsLoggedIn",true)
-            localStorage.setItem("contextValue",JSON.stringify({uid:res.uid}))
+            localStorage.setItem("contextValue",JSON.stringify(contextValue))
             setIsLoggedIn(true);
             setisLoaderVisible(false)
             history.push('/Dashboard')

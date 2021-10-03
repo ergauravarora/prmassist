@@ -32,7 +32,7 @@ function UserAccount() {
       
       setCurrentUserData({
         dateCreated:contextValue && contextValue.metadata && contextValue.metadata.creationTime || "Not Available",
-        email:d.data.email,
+        email:contextValue.email,
         firstName:d.data.firstName,
         lastName:d.data.lastName,
       })
@@ -45,7 +45,6 @@ function UserAccount() {
   return (
     <div>
       <PageContainer title="User Account">
-        
         <Grid  padding="10px 0px">
           <Typography variant="body2" color="text.secondary" fontWeight="bold">
             User Name

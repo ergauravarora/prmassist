@@ -27,6 +27,7 @@ function ReportBug() {
     Category:null,
     Description:null,
     ScreenShot:null,
+    Email:contextValue.email
   })
 
   const [TempImage, setTempImage] = useState();

@@ -71,7 +71,7 @@ function Orders() {
           <TableRow>
             <TableCell>S.NO.</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
+            {/* <TableCell>Email</TableCell> */}
             <TableCell>User Status</TableCell>
           </TableRow>
         </TableHead>
@@ -80,7 +80,7 @@ function Orders() {
             <TableRow key={row.uid}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{row.firstName +" "+ row.lastName}</TableCell>
-              <TableCell>{row.email}</TableCell>
+              {/* <TableCell>{row.email}</TableCell> */}
               <TableCell>
                 <FormGroup>
                   <FormControlLabel
