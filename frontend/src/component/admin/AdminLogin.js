@@ -44,7 +44,7 @@ const AdminLogin = () => {
       
       })
       .catch((error) => {
-        setAlertMessage("Admin Credentials are not Correct");
+        setAlertMessage(error.message);
         console.error(error);
       });
   };

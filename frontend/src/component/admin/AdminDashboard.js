@@ -12,9 +12,17 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import Orders from './Table';
 import LogoutButtonComponent from '../../shared/LogoutButtonComponent';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -65,10 +73,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+
+
 const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+  const history = useHistory()
+  const handelMenuSwitch = (url) => {
+    if (url === "Dashboard") {
+      history.push("/AdminDashboard");
+    } 
+  };
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -121,12 +138,16 @@ function DashboardContent() {
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
-          {/* <Divider />
-          mainListItems
-          <List>{mainListItems}</List>
-          <Divider />
-          secondaryListItems
-          <List>{secondaryListItems}</List> */}
+          
+ 
+          <List>
+            <ListItem button onClick={() => handelMenuSwitch("Dashboard")}>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+            </List>
         </Drawer>
         <Box
           component="main"
