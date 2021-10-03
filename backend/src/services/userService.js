@@ -18,7 +18,7 @@ const RegisterUserAsync =async (body) =>{
   return fa.RegisterUser(body).then(resp=>{
     if (resp) {
       // The write failed...
-      return "User Added Failed"
+      helper.throwError("User Added Failed")
     } else {
       // The write was successful..
       return "User Added Successfull"
@@ -31,7 +31,7 @@ const VerifyRegisterUserAsync =async (body) =>{
   return fa.VerifyRegisterUser(body).then(resp=>{
     if (resp) {
       // The write failed...
-      return "Something Went Wrong with Airport Authority"
+      helper.throwError("Something Went Wrong with Airport Authority")
     } else {
       // The write was successful..
       return "User is Verifed by Airport Authority"
@@ -43,7 +43,7 @@ const DenyRegisterUserAsync =async (body) =>{
   return fa.DenyRegisterUser(body).then(resp=>{
     if (resp) {
       // The write failed...
-      return "Something Went Wrong with Airport Authority"
+      helper.throwError( "Something Went Wrong with Airport Authority")
     } else {
       // The write was successful..
       return "User is Denyed by Airport Authority"
@@ -60,9 +60,6 @@ const GetAllUserAsync =async (body) =>{
     }
   })      
 } 
-
-
-
 const ReportBugAsync =async (body) =>{ 
   
   return fa.GetUserById(body).then((snapshot) => {
@@ -84,13 +81,12 @@ const ReportBugAsync =async (body) =>{
           }
           })
     } else { 
-        return  "No Data Available"
+      helper.throwError("No Data Available")
     }
   })  
   
         
 } 
-
 const upload = multer({ 
   storage:  multer.diskStorage({
     destination: function (req, file, cb) {
@@ -116,6 +112,8 @@ const upload = multer({
           return cb(null, true);
       }
     
+      helper.throwError("Error: File upload only supports the "
+      + "following filetypes - " + filetypes)
       cb("Error: File upload only supports the "
               + "following filetypes - " + filetypes);
 
@@ -126,6 +124,10 @@ const upload = multer({
 
 
 const FileUploadAync = async(req,res)=>{
+  if(req.file.filename)
+  {
+    helper.throwError("File Upload Failed");
+  }
   return req.file.filename 
 }
 
