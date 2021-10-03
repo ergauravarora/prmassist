@@ -1,2 +1,2 @@
-export const username = "agaurav546@gmail.com"
-export const password = "yhopquypdkxxponk"
+export const username = process.env.NodeMailerUserName
+export const password = process.env.NodeMailerPassword
