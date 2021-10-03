@@ -61,62 +61,7 @@ const GetAllUserAsync =async (body) =>{
   })      
 } 
 
-const ChangePasswordAsync =async (body) =>{ 
-  return fa.GetUserById(body).then((snapshot) => {
-    if (snapshot.exists()) {
 
-      let data = snapshot.val();
-      if(body.oldPassword !== data.password)
-      {
-        return  "Old Password is Incorrect"
-      }
-      else
-      {
-       return fa.ChangePassword(body).then(resp=>{
-          if (resp) {
-            // The write failed...
-            return "Something Went Wrong Please Contact Admin"
-          } else {
-            // The write was successful..
-            return "Password Changed Successfully"
-          }
-      })
-    }
-        
-    } else { 
-      return  "No Data Available"
-    }
-  })
-        
-} 
-const ChangeEmailAsync =async (body) =>{ 
-  return fa.GetUserById(body).then((snapshot) => {
-    if (snapshot.exists()) {
-
-      let data = snapshot.val();
-      if(body.oldEmail !== data.email)
-      {
-        return  "Old Email is Incorrect"
-      }
-      else
-      {
-       return fa.ChangeEmail(body).then(resp=>{
-          if (resp) {
-            // The write failed...
-            return "Something Went Wrong Please Contact Admin"
-          } else {
-            // The write was successful..
-            return "Email Changed Successfully"
-          }
-      })
-    }
-        
-    } else { 
-      return  "No Data Available"
-    }
-  })
-        
-}  
 
 const ReportBugAsync =async (body) =>{ 
   
@@ -184,7 +129,4 @@ const FileUploadAync = async(req,res)=>{
   return req.file.filename 
 }
 
-const LoginAsync =async (body) =>{ 
-  return fa.Login(body);        
-}  
-export default {upload,LoginAsync,FileUploadAync,ReportBugAsync,ChangeEmailAsync,ChangePasswordAsync,DenyRegisterUserAsync,GetUserByIdAsync,RegisterUserAsync,VerifyRegisterUserAsync,GetAllUserAsync};
+export default {upload,FileUploadAync,ReportBugAsync,DenyRegisterUserAsync,GetUserByIdAsync,RegisterUserAsync,VerifyRegisterUserAsync,GetAllUserAsync};

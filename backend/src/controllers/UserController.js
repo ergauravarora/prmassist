@@ -104,52 +104,6 @@ const postGetUserById = async (req, res, next) => {
             handleError(res,next,e.message)
           }
         }
-        const postChangePassword= async (req, res, next) => {
-          const {body} = req;
-          
-          const schema = Joi.object().keys({
-            uid: Joi.string().required(),
-            newPassword: Joi.string().required(),
-            oldPassword: Joi.string().required()
-          });
-        
-          let {error, value} = schema.validate(body)
-          
-          if(error)
-          {
-           return handleError(res,next,error.details[0].message)
-          }
-            try {
-              var data = await UserService.ChangePasswordAsync(value);
-              handleSuccess(res,data,next);
-            } catch(e) {
-              console.log(e.message)
-              handleError(res,next,e.message)
-            }
-          }
-          const postChangeEmail= async (req, res, next) => {
-            const {body} = req;
-            
-            const schema = Joi.object().keys({
-              uid: Joi.string().required(),
-              newEmail: Joi.string().required(),
-              oldEmail: Joi.string().required()
-            });
-          
-            let {error, value} = schema.validate(body)
-            
-            if(error)
-            {
-             return handleError(res,next,error.details[0].message)
-            }
-              try {
-                var data = await UserService.ChangeEmailAsync(value);
-                handleSuccess(res,data,next);
-              } catch(e) {
-                console.log(e.message)
-                handleError(res,next,e.message)
-              }
-            }
             const postReportBug= async (req, res, next) => {
               const {body} = req;
               
@@ -187,26 +141,6 @@ const postGetUserById = async (req, res, next) => {
               handleError(res,next,e.message)
             }
           } 
-          const postUserLogin = async (req, res, next) => {
-            const { body } = req;
-            const schema = Joi.object().keys({
-              email: Joi.string().required(),
-              password: Joi.string().required(),
-            });
-          
-            let { error, value } = schema.validate(body);
-            if (error) {
-              return handleError(res, next, error.details[0].message);
-            }
-            try {
-              var data = await UserService.LoginAsync(value);
-              handleSuccess(res, data, next);
-            } catch (e) {
-              console.log(e.message);
-              handleError(res, next, e.message);
-            }
-          };
-  
           const FileUpload =  UserService.upload
 
-export default {FileUpload,postUserLogin,postFileUpload,postReportBug,postChangeEmail,postChangePassword,postGetUserById,postRegisterUser,postVerifyRegisterUser,getAllUser,postDenyRegisterUser}
+export default {FileUpload,postFileUpload,postReportBug,postGetUserById,postRegisterUser,postVerifyRegisterUser,getAllUser,postDenyRegisterUser}
