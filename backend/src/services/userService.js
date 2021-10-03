@@ -3,7 +3,6 @@ import helper from '../helper/response.js'
 import multer from 'multer'
 import fs from 'fs';
 import path from "path";
-import { fromEmail } from '../config/config.js';
   
 const GetUserByIdAsync =async (body) =>{ 
   return fa.GetUserById(body).then((snapshot) => {
