@@ -119,13 +119,14 @@ const ChangeEmailAsync =async (body) =>{
 }  
 
 const ReportBugAsync =async (body) =>{ 
+  
   return fa.GetUserById(body).then((snapshot) => {
     if (snapshot.exists()) {
         var user =  snapshot.val();
        return fa.ReportBug(body).then(async resp=>{
           if (resp) {
             // The write failed...
-            return "Report Bug Failed"
+            helper.throwError("Report Bug Failed")
           } else {
             // The write was successful..
             var Emailbody = `
