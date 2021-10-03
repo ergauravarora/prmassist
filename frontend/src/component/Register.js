@@ -47,7 +47,7 @@ export default function SignUp() {
       })
       if(res.ok)
       {
-        var data =  res.JSON();
+        var data = await res.json();
         if(data.status === 1)
         {
           setisLoaderVisible(false)

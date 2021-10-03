@@ -76,16 +76,23 @@ const handleSubmit = async ()=>{
   if (data.ok) {
   var d =  await data.json();
 
-  setAlertMessage("Bug Report Sent ...")
-  setisLoaderVisible(true)
-  setBug({...Bug,
-    Title:'',
-    DOB:'',
-    Category:'',
-    Description:'',
-    ScreenShot:'',
-  })
-  setTempImage()
+  if(d.status === 1)
+  {
+    setAlertMessage("Bug Report Sent ...")
+    setisLoaderVisible(true)
+    setBug({...Bug,
+      Title:'',
+      DOB:'',
+      Category:'',
+      Description:'',
+      ScreenShot:'',
+    })
+    setTempImage()
+  }
+  else
+  {
+    setAlertMessage(d.msg);
+  }
     }
 }
   return (
