@@ -62,6 +62,9 @@ const handleError = (res,next,msg) => {
   };
  
     
+  const throwError =(msg)=>{
+   throw {message:msg}
+  }
       
 
-  export default { handleError,handleSuccess,sendEmail}
+  export default { throwError,handleError,handleSuccess,sendEmail}
