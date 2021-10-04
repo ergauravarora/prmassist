@@ -14,6 +14,9 @@ app.use(function(req, res, next) {
     next();
   });
 
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
+  });
 
   app.get('/', (req, res) => res.send('App is working'))
   app.use('/api', Route)
