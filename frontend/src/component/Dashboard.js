@@ -92,19 +92,7 @@ function DashboardContent({children}) {
     }
   }, [history, isLoggedIn]);
 
-  const handelMenuSwitch = (url) => {
-    if (url === "Dashboard") {
-      history.push("/Dashboard");
-    } else if (url === "Account") {
-      history.push("/UserAccount");
-    } else if (url === "ChangePassword") {
-      history.push("/ChangePassword");
-    } else if (url === "ChangeEmail") {
-      history.push("/ChangeEmail");
-    } else if (url === "ReportBug") {
-      history.push("/ReportBug");
-    }
-  };
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
@@ -155,31 +143,31 @@ function DashboardContent({children}) {
           <Divider />
 
           <List>
-            <ListItem button onClick={() => handelMenuSwitch("Dashboard")}>
+            <ListItem button onClick={() => history.push("/Dashboard")}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button onClick={() => handelMenuSwitch("Account")}>
+            <ListItem button onClick={() => history.push("/UserAccount")}>
               <ListItemIcon>
                 <PeopleIcon />
               </ListItemIcon>
               <ListItemText primary="User Account" />
             </ListItem>
-            <ListItem button onClick={() => handelMenuSwitch("ChangePassword")}>
+            <ListItem button onClick={() => history.push("/ChangePassword")}>
               <ListItemIcon>
                 <PasswordOutlined />
               </ListItemIcon>
               <ListItemText primary="Change Password" />
             </ListItem>
-            <ListItem button onClick={() => handelMenuSwitch("ChangeEmail")}>
+            <ListItem button onClick={() => history.push("/ChangeEmail")}>
               <ListItemIcon>
                 <EditAttributesOutlined />
               </ListItemIcon>
               <ListItemText primary="Change Email" />
             </ListItem>
-            <ListItem button onClick={() => handelMenuSwitch("ReportBug")}>
+            <ListItem button onClick={() => history.push("/ReportBug")}>
               <ListItemIcon>
                 <BugReport />
               </ListItemIcon>
