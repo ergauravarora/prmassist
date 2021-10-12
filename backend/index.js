@@ -1,5 +1,6 @@
 import express from "express";
-import Route from "./src/router/userRouter.js";
+import rootRouter from "./src/router/rootRouter.js";
+
 
 const app = express()
 
@@ -17,7 +18,7 @@ app.use(function(req, res, next) {
 
   app.get('/', (req, res) => res.send('App is working'))
  
-  app.use('/api', Route)
+  app.use('/api', rootRouter);
   var port = process.env.PORT || 8080;
   app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 

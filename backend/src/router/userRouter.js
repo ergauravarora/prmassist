@@ -1,25 +1,18 @@
 
 import  express from 'express';
 import userController  from '../controllers/UserController.js';
-import AuthController from '../controllers/AuthController.js';
 import AuthService from '../services/AuthService.js';
 
 
-const Route = express.Router()
+const UserRoute = express.Router()
 
-Route.post('/GetUserById',AuthService.authenticateTokenMiddleWare, userController.postGetUserById)
-Route.get('/GetAllUser',AuthService.authenticateTokenMiddleWare, userController.getAllUser)
-Route.post('/ReportBug',AuthService.authenticateTokenMiddleWare,userController.postReportBug)
-Route.post('/FileUpload',[AuthService.authenticateTokenMiddleWare,userController.FileUpload],userController.postFileUpload)
+UserRoute.post('/GetUserById',AuthService.authenticateTokenMiddleWare, userController.postGetUserById)
+UserRoute.get('/GetAllUser',AuthService.authenticateTokenMiddleWare, userController.getAllUser)
+UserRoute.post('/ReportBug',AuthService.authenticateTokenMiddleWare,userController.postReportBug)
+UserRoute.post('/FileUpload',[AuthService.authenticateTokenMiddleWare,userController.FileUpload],userController.postFileUpload)
 
-Route.post('/RegisterUser', userController.postRegisterUser)
-Route.post('/VerifyRegisterUser',userController.postVerifyRegisterUser)
-Route.post('/DenyRegisterUser',userController.postDenyRegisterUser)
+UserRoute.post('/RegisterUser', userController.postRegisterUser)
+UserRoute.post('/VerifyRegisterUser',userController.postVerifyRegisterUser)
+UserRoute.post('/DenyRegisterUser',userController.postDenyRegisterUser)
 
-
-Route.post('/GetTokenAgainstUid',AuthController.GetTokenAgainstUid)
-Route.post('/RefreshToken',AuthController.RefreshToken)
-Route.post('/logoutAndRemoveTokenForRemoveAccess',AuthController.logoutAndRemoveTokenForRemoveAccess)
-
-
-export default Route;
+export default UserRoute;

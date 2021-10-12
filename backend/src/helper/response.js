@@ -44,12 +44,34 @@ const sendEmail =async (name,to,body,ScreenShot)=>{
     return a
 }
 const handleError = (res,next,msg) => {
-   return res.status(200).json({
+  console.log("error handler")
+  
+  if(typeof(msg) === "object")
+  {
+    
+    var message = [];
+    msg.forEach(m => {
+      message.push(m.message);
+    });
+    return res.status(200).json({
+      status: 0,
+      msg : message || "Failed",
+      data : []
+    })
+    &&
+    next();
+  }
+  else
+  {
+    return res.status(200).json({
       status: 0,
       msg : msg || "Failed",
       data : []
-    }) &&
+    })
+    &&
     next();
+  }
+    
   };
 
   const handleSuccess = (res,data,next,msg) => {
