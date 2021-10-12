@@ -7,6 +7,14 @@ const ReviewRoute = express.Router();
 ReviewRoute.post('/ReviewAssistance',AuthService.authenticateTokenMiddleWare,ReviewController.ReviewAssistance)
 ReviewRoute.get('/AirportRatings/:code',AuthService.authenticateTokenMiddleWare,ReviewController.AirportRatings)
 ReviewRoute.get('/AirlineRatings/:code',AuthService.authenticateTokenMiddleWare,ReviewController.AirlineRatings)
+
+
+//this is for dashboard admin
+
+//api for most  popular keyword 
 ReviewRoute.get('/GetMostRecentWords/:code',ReviewController.GetMostRecentWords)
+
+//api for User Quality Report with time duration average rating 
+//Daily average rating will be stored in DB 
 
 export default ReviewRoute

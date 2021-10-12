@@ -1,0 +1,45 @@
+Quality Report with time duration average rating 
+
+expected input 
+    startDate = sept 1
+    endDate = sept 30
+    timeslide  = 6
+expected output
+{
+    timeRatings: [
+    {
+        day:"sept 1"
+        rating:1
+    },
+    {
+        day:"sept 8"
+        rating:5
+    },
+    {
+        day:"sept 16"
+        rating:4.2
+    },
+    {
+        day:"sept 24"
+        rating:1.6
+    },
+    {
+        day:"sept 30"
+        rating:3.8
+    },
+    ],
+    sevenDaysAvg:{
+        color:'blue',
+        rating:3.8
+    },
+    fourteenDaysAvg:{
+        color:'purple',
+        rating:4.3
+    },
+    twentyeightDaysAvg:{
+        color:'green',
+        rating:3.8
+    },
+
+}
+   
