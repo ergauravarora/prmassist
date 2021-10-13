@@ -131,10 +131,36 @@ const GetMostRecentWords =async (req,res,next) =>{
 
 }
 
+const UserQuality  =async (req,res,next) =>{
+    const {query} = req;
+  
+    const schema = Joi.object().options({ abortEarly: false }).keys({
+        StartDate: Joi.date().required(),
+        EndDate: Joi.date().required(),
+        Duration: Joi.number().optional()
+    });
+  
+    let {error, value} = schema.validate(query)
+    
+    if(error)
+    {
+        return handleError(res,next,error.details)
+    }
+
+    try {
+        var data =await ReviewService.UserQualityAsync(value);
+        handleSuccess(res,data,next);
+      } catch(e) {
+        console.log(e.message)
+        handleError(res,next,e.message)
+      }
+
+}
+
 export default {
 ReviewAssistance,
 AirportRatings,
 AirlineRatings,
-
+UserQuality,
 GetMostRecentWords
 }

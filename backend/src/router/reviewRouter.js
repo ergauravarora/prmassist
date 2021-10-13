@@ -16,5 +16,6 @@ ReviewRoute.get('/GetMostRecentWords/:code',ReviewController.GetMostRecentWords)
 
 //api for User Quality Report with time duration average rating 
 //Daily average rating will be stored in DB 
+ReviewRoute.get('/UserQuality',ReviewController.UserQuality)
 
 export default ReviewRoute

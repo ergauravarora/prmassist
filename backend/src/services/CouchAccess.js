@@ -19,10 +19,10 @@ const createDB =(dbname)=>
 
 const createReview =async (review) =>
 {
-    var DepartureAirportsServiceReview =    await addAirportsServiceReview({...review.departure,airport:review.departureAirport});
-        var ArrivalAirportsServiceReview =  await addAirportsServiceReview({...review.arrival,airport:review.arrivalAirport});
-        var AirlineServiceReview =          await addAirlineServiceReview({...review.flight,airline:review.airline});
-        var PrmassistReview=                await addPrmassistReview({...review.prmassist,bookingId:review.bookingId});
+    var DepartureAirportsServiceReview =    await addAirportsServiceReview({...review.departure,airport:review.departureAirport,date:new Date()});
+        var ArrivalAirportsServiceReview =  await addAirportsServiceReview({...review.arrival,airport:review.arrivalAirport,date:new Date()});
+        var AirlineServiceReview =          await addAirlineServiceReview({...review.flight,airline:review.airline,date:new Date()});
+        var PrmassistReview=                await addPrmassistReview({...review.prmassist,bookingId:review.bookingId,date:new Date()});
         if(ArrivalAirportsServiceReview.ok && DepartureAirportsServiceReview.ok && AirlineServiceReview.ok && PrmassistReview.ok)
         {
             var reviewData = {...review};
@@ -34,7 +34,8 @@ const createReview =async (review) =>
                 departureReviewID:DepartureAirportsServiceReview.id,
                 arrivalReviewID:ArrivalAirportsServiceReview.id,
                 flightReviewID:AirlineServiceReview.id,
-                prmassistReviewID:PrmassistReview.id
+                prmassistReviewID:PrmassistReview.id,
+                date:new Date()
             }
             var resp = await ReviewForAssistance.insert(reviewData, review.bookingId);
             if(resp.ok)
@@ -102,5 +103,18 @@ const GetMostRecentWords =async ()=>{
     // here we need to filter words 
     return files.docs
 }
+
+const GetUserQualityRatings = async ()=>{
+
+    var files =await AirportsServiceReview.find({
+        selector: {
+            
+        }, 
+        fields: ['quality','date'],
+    })
+
+    // here we need to filter words 
+    return files.docs
+}
       
-export default {createReview,GetAirportsServiceReview,GetAirlineServiceReview,GetMostRecentWords}
+export default {createReview,GetAirportsServiceReview,GetAirlineServiceReview,GetMostRecentWords,GetUserQualityRatings}
