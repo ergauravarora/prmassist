@@ -38,83 +38,91 @@ const UserQualityAsync =async ({StartDate,EndDate,Duration})=>{
 var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 var slots = Difference_In_Days / (Duration || 7)
 
-var re =await CouchAccess.GetUserQualityRatings();
+var data =await CouchAccess.GetUserQualityRatings();
+var newarray = [];
+data.map(d => 
+    {
+        var alreadyHave = false;
+        if(newarray.length > 0)
+        {
+            newarray.map(e => {
+                if(e.date === d.date)
+                {
+                    alreadyHave = true
+                }
+        })
+        if(!alreadyHave)
+        {
+            newarray.push(d) 
+        }
+        }
+        else
+        {
+            newarray.push(d)
+        }
+         
+     }
+)
+
+var finalResponse  = [];
+newarray.forEach(n => {
+
+    var sum = 0;
+    data.filter(d => {
+        if(d.date === n.date)
+        {
+            sum+= d.quality
+        }
+    });
+    
+    var dat = data.filter((v) => (v.date === n.date)).length
+    
+    var avgForDayIs = (sum /  dat).toFixed(1);
+    
+      finalResponse.push({date:n.date,avg:avgForDayIs})
+})
+
+
+var months = [];
+var array = data;
+
+array.map(d => 
+    {
+        var alreadyHave = false;
+        if(months.length > 0)
+        {
+            months.map(e => {
+                if(e.month === new Date(d.date +"T00:00:00.000Z").getMonth() +1)
+                {
+                    alreadyHave = true
+                }
+        })
+        if(!alreadyHave)
+        {
+            months.push({month: new Date(d.date +"T00:00:00.000Z").getMonth() +1}) 
+        }
+        }
+        else
+        {
+						months.push({month: new Date(d.date +"T00:00:00.000Z").getMonth() +1})
+        }
+         
+     }
+)
+
+var MonthSepratedRating = []
+
+
+months.forEach(selected => {
+
+MonthSepratedRating.push({month:selected.month,data:array.filter(d => new Date(d.date +"T00:00:00.000Z").getMonth() +1 === selected.month)})
+})
+
+
+console.log(MonthSepratedRating)
 
     var resp = {
-        timeRatings: [
-            {
-                Month:"Aug 21",
-                Rating:[
-                    {
-                    day:"Aug 1",
-                    rating:1
-                },
-                {
-                    day:"Aug 2",
-                    rating:5
-                },
-                {
-                    day:"Aug 3",
-                    rating:4.2
-                },
-                {
-                    day:"Aug 4",
-                    rating:1.6
-                },
-                {
-                    day:"Aug 5",
-                    rating:3.8
-                }]
-            },
-            {
-                Month:"sept 21",
-                Rating:[
-                    {
-                    day:"sept 1",
-                    rating:1
-                },
-                {
-                    day:"sept 2",
-                    rating:5
-                },
-                {
-                    day:"sept 3",
-                    rating:4.2
-                },
-                {
-                    day:"sept 4",
-                    rating:1.6
-                },
-                {
-                    day:"sept 5",
-                    rating:3.8
-                }]
-            },
-            {
-                Month:"Oct 21",
-                Rating:[
-                    {
-                    day:"Oct 1",
-                    rating:1
-                },
-                {
-                    day:"Oct 2",
-                    rating:5
-                },
-                {
-                    day:"Oct 3",
-                    rating:4.2
-                },
-                {
-                    day:"Oct 4",
-                    rating:1.6
-                },
-                {
-                    day:"Oct 5",
-                    rating:3.8
-                }]
-            }
-            ],
+        timeRatings: MonthSepratedRating,
         sevenDaysAvg:{
             color:'blue',
             rating:3.8
@@ -129,7 +137,7 @@ var re =await CouchAccess.GetUserQualityRatings();
         }    
     }
     
-    return resp;
+    return MonthSepratedRating;
 }
 export default {
     UserQualityAsync,

@@ -104,6 +104,16 @@ const GetMostRecentWords =async ()=>{
     return files.docs
 }
 
+
+const getDate = (date) =>{
+
+    var x = date.split('T')[0];
+    var y = date.split('T')[0];
+    var month = y.split('-')[1]  > 9 ? y.split('-')[1] : '0'+y.split('-')[1];
+    var day = x.split('-')[0]
+    var year = x.split('-')[2]
+    return day+'-'+month+'-'+year
+}
 const GetUserQualityRatings = async ()=>{
 
     var files =await AirportsServiceReview.find({
@@ -114,7 +124,10 @@ const GetUserQualityRatings = async ()=>{
     })
 
     // here we need to filter words 
-    return files.docs
+    var data = files.docs.map(d => { d.date = getDate(d.date);
+        return d
+     })
+    return data
 }
       
 export default {createReview,GetAirportsServiceReview,GetAirlineServiceReview,GetMostRecentWords,GetUserQualityRatings}
