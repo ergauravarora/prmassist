@@ -1,66 +1,136 @@
-const chais = require('chai')
+import chais from 'chai'
 const assert = chais.assert
 const expects = chais.expect
 
-const chaiHttp = require("chai-http")
+import chaiHttp from "chai-http";
 chais.use(chaiHttp)
 // const sinon = require("sinon")
 const should = chais.should()
 
 // const auth = require('../src/services/AuthService')
-const app = require('../index')
+import app from  '../index.js';
 // const getUser = require('../src/controllers/UserController')
 
-const addReview = require('../src/controllers/ReviewController')
+import  addReview from '../src/controllers/ReviewController.js'
 
+
+const RefreshToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQxNDM0NjEsImV4cCI6MTYzNDE1NTQ2MX0.LwL4UylXV_-CWXZOm7wHYc7zLxavZfwPXD9sN948mG4';
+const invalidToken = 'abcd'
+const ReviewAssistance = {
+    "bookingId":"BOOKING00174",
+    "age":"24",
+    "departureAirport":"DUB",
+    "arrivalAirport":"WST",
+    "airline":"WX",
+    "departure":{
+        "quality":1,
+        "staff":1,
+        "facilities":1
+    },
+    "arrival":{
+        "quality":1, 
+        "staff":1, 
+        "facilities":1 
+    },
+    "flight":{
+        "boarding":1,
+        "onboard":1,
+        "disembark":1
+    },
+    "prmassist":{
+        "heard":"heard data",
+        "improvement":true,
+        "comments":"this is comment"
+    }
+}
 // this is demo test case of index.js
-describe('getting demo value from index.js', ()=>{
+describe('#check if api is working', ()=>{
     it('It should get value from index.js', (done) =>{
         chais.request(app)
         .get('/home')
         .end((err,res)=>{
             expects(res.status).to.be.equal(200)
-            expects(res.body).to.have.all.keys('data')
         done();
         })
     })
 })
-
 //it will get all users from user controller
-describe('getting api/user/GetAllUser', ()=>{
-    it('It should get all the users', (done) =>{
+describe('#api/user/GetAllUser', ()=>{
+    it('It should return 401 without token', (done) =>{
         chais.request(app)
         .get('/api/user/GetAllUser')
         .end((err,res)=>{
+            expects(res.status).to.be.equal(401)
+           // expects(res.body).to.have.all.keys('data')
+        done();
+        })
+    })
+    it('It should return 401 with invalid token', (done) =>{
+        chais.request(app)
+        .get('/api/user/GetAllUser')
+        .set('Authorization', `bearer ${invalidToken}`)
+        .end((err,res)=>{
+            expects(res.status).to.be.equal(401)
+        done();
+        })
+    })
+    it('It should return user List with valid token', (done) =>{
+        chais.request(app)
+        .get('/api/user/GetAllUser')
+        .set('Authorization', `bearer ${RefreshToken}`)
+        .end((err,res)=>{
             expects(res.status).to.be.equal(200)
-            expects(res.body).to.have.all.keys('data')
+           // expects(res.body).to.have.all.keys('data')
         done();
         })
     })
 })
-
-
 //it will check the ReviewAssistance
-describe("post /ReviewAssistance",() =>{
-
-    // beforeEach(()=>{
-    //     authInSub = sinon.stub(auth, 'authenticateTokenMiddleWare').callsFake((req, res, next) => {next()})
-    //     app = require('../i')
-    // })
-
-    it("should return status 200", async (done)=>{
+describe("#api/review/ReviewAssistance",() =>{
+    it("should return status 401 without token", (done)=>{
         chais.request(app)
-        .post('api/review/ReviewAssistance')
+        .post('/api/review/ReviewAssistance')
         .send({age:"23"})//pass object here
         .end((err,res)=>{
-            expect(res.status).to.equal(200)
-            expect(res.data).to.have.all.keys('data')
+            expects(res.status).to.equal(401)
             done()
         })
+        
     })
-
-    //delete tested object after test is done
-    afterEach(async () =>{
-        await addReview.deleteOne({age:"23"})
+    it("should return status 401 with invalid token", (done)=>{
+        chais.request(app)
+        .post('/api/review/ReviewAssistance')
+        .set('Authorization', `bearer ${invalidToken}`)
+        .send({"age":"23"})//pass object here
+        .end((err,res)=>{
+            expects(res.status).to.equal(401)
+            done()
+        })
+        
+    })
+    it('It should return status 0 if any error is there and data will be 0 error message will be there when having valid token but incomplete data', (done) =>{
+        chais.request(app)
+        .post('/api/review/ReviewAssistance')
+        .send({"age":"23"})//pass object here
+        .set('Authorization', `bearer ${RefreshToken}`)
+        .end((err,res)=>{
+            expects(res.status).to.be.equal(200)
+            expects(res.body.status).to.be.equal(0)
+            expects(res.body.data.length).to.be.equal(0)
+            expects(res.body.msg.length).to.be.greaterThanOrEqual(1)
+        done();
+        })
+    })
+    it('valid data and valid token result success', (done) =>{
+        chais.request(app)
+        .post('/api/review/ReviewAssistance')
+        .send(ReviewAssistance)//pass object here
+        .set('Authorization', `bearer ${RefreshToken}`)
+        .end((err,res)=>{
+            expects(res.status).to.be.equal(200)
+            expects(res.body.status).to.be.equal(1)
+            expects(res.body.msg).to.be.equal("Success")
+        done();
+        })
     })
 })

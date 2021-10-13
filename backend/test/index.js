@@ -1,13 +1,15 @@
-var expect  = require('chai').expect;
+import  chais from 'chai';
 
-describe('Array', function(){
+const expects = chais.expect
+
+describe('#Array Test if working', function(){
     describe('#indexOf()',function(){
         it('should return -1 when the value is not present', function(){
-            expect([1,2,3].indexOf(4)).to.equal(-1);
+            expects([1,2,3].indexOf(5)).to.equal(-1);
         })
     })
     it('Main page content', function(done) {
-        expect('Hello World').to.equal('Hello World');
+        expects('Hello World').to.equal('Hello World');
         done();
     });
 })

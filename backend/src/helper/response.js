@@ -43,9 +43,7 @@ const sendEmail =async (name,to,body,ScreenShot)=>{
     var a =await smtpTransport.sendMail(mailOptions);
     return a
 }
-const handleError = (res,next,msg) => {
-  console.log("error handler")
-  
+const handleError = (res,next,msg) => {  
   if(typeof(msg) === "object")
   {
     

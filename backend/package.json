@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
-    "test": "nodemon --exec babel-node ./node_modules/mocha -r ts-node/register test/*.js"
+    "test": "node ./node_modules/mocha/bin/mocha --timeout 10000"
   },
   "author": "",
   "license": "ISC",
