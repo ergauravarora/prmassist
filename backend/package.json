@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --exec babel-node index.js",
+    "test": "nodemon --exec babel-node ./node_modules/mocha"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +20,13 @@
     "nodemailer": "^6.6.5",
     "nodemon": "^2.0.13"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/node": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.2"
+  }
 }
