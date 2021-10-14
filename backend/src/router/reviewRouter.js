@@ -12,7 +12,7 @@ ReviewRoute.get('/AirlineRatings/:code',AuthService.authenticateTokenMiddleWare,
 //this is for dashboard admin
 
 //api for most  popular keyword 
-ReviewRoute.get('/GetMostRecentWords/:code',ReviewController.GetMostRecentWords)
+ReviewRoute.get('/GetMostRecentWords',ReviewController.GetMostRecentWords)
 
 //api for User Quality Report with time duration average rating 
 //Daily average rating will be stored in DB 

@@ -1,10 +1,11 @@
 import couch  from "../config/couchdb.js";
-
+import utils from "../helper/utils.js";
 var ReviewForAssistance = couch.use('review_for_assistance');
 var AirportsServiceReview = couch.use('airports_service_review');
 var AirlineServiceReview = couch.use('airline_service_review');
 var PrmassistReview = couch.use('prmassist_review');
 var MostRecentWords = couch.use('most_recent_words');
+var ExcludedWords = couch.use('excluded_words');
 const createDB =(dbname)=>
 {
     couch.db.create(dbname, function(err) {  
@@ -37,6 +38,7 @@ const createReview =async (review) =>
                 prmassistReviewID:PrmassistReview.id,
                 date:new Date()
             }
+            
             var resp = await ReviewForAssistance.insert(reviewData, review.bookingId);
             if(resp.ok)
             {
@@ -47,6 +49,10 @@ const createReview =async (review) =>
 };
 
 const addAirportsServiceReview=async (data)=>{
+            if(data.comments)
+            {
+                addMostRecentWords(data.comments)
+            }
     var files =await AirportsServiceReview.insert(data);
     return files;
 }
@@ -81,14 +87,76 @@ const GetAirlineServiceReview =async (code)=>{
 }
 
 
-const addMostRecentWords=async (data)=>{
 
+
+const addMostRecentWords=async (string)=>{
+
+    var obj =[]
+    var  SplittedStringArrayWithoutExluded= string.split(' ');
+
+    
+    var exludedKeywords = []
+
+    var ExcludedWordsListObject = await ExcludedWords.find({
+        selector:{},
+        fields:['word']
+    });
+
+    ExcludedWordsListObject.docs.forEach(function(obj){
+        exludedKeywords.push(obj.word);
+    })
+    
+    var SplittedStringArray = SplittedStringArrayWithoutExluded.filter(item => 
+        {
+            var flag = 0;
+    exludedKeywords.forEach(word => {
+        if(item === word)
+        {
+            flag ++;
+        }
+            })
+           
+            return flag === 0
+        })
+    var UniqueCharArray =SplittedStringArray.filter((v,i) => SplittedStringArray.indexOf(v) == i);
+   
+    UniqueCharArray.map(el=>{
+    var d = { key:el,count:utils.countOccurrences(string,el)};
+        obj.push(d);
+        return d;
+    });
+
+    
     // filter excudeed words
     // add word initially
     //if word exist then update the accourance
     //else add accourcance with respective userid
-    var files =await MostRecentWords.insert(data);
-    return files;
+    obj.forEach(async ob => {
+        var data = await MostRecentWords.find({
+            selector: {
+                key:ob.key
+            }, 
+            fields: ['key', 'count','_rev','_id'],
+        })
+        console.log(data.docs)
+        if(data.docs.length >0)
+        {
+            var rev = data.docs[0]._rev;
+            var id= data.docs[0]._id;
+            let UpdatedCount = data.docs[0].count + ob.count
+            let obj = {...ob,_rev:rev,_id: id,count:UpdatedCount}
+            
+            await MostRecentWords.insert(obj)
+        }
+        else
+        {
+            await MostRecentWords.insert(ob)
+        }
+        
+    })
+
+    console.log(obj)
+    return [];
 }
 
 const GetMostRecentWords =async ()=>{
@@ -105,15 +173,7 @@ const GetMostRecentWords =async ()=>{
 }
 
 
-const getDate = (date) =>{
 
-    var x = date.split('T')[0];
-    var y = date.split('T')[0];
-    var month = y.split('-')[1]  > 9 ? y.split('-')[1] : '0'+y.split('-')[1];
-    var day = x.split('-')[0]
-    var year = x.split('-')[2]
-    return day+'-'+month+'-'+year
-}
 const GetUserQualityRatings = async ()=>{
 
     var files =await AirportsServiceReview.find({
@@ -125,7 +185,7 @@ const GetUserQualityRatings = async ()=>{
     })
 
     // here we need to filter words 
-    var data = files.docs.map(d => { d.date = getDate(d.date);
+    var data = files.docs.map(d => { d.date = utils.getDate(d.date);
         return d
      })
     return data
@@ -142,7 +202,7 @@ const GetUserAssistanceAverage = async ()=>{
     })
 
     // here we need to filter words 
-    var data = files.docs.map(d => { d.date = getDate(d.date);
+    var data = files.docs.map(d => { d.date = utils.getDate(d.date);
         return d
      })
     return data

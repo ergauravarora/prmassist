@@ -110,7 +110,7 @@ const GetMostRecentWords =async (req,res,next) =>{
     const {params} = req;
   
     const schema = Joi.object().options({ abortEarly: false }).keys({
-        code: Joi.string().required(),
+        code: Joi.string().optional(),
     });
   
     let {error, value} = schema.validate(params)
