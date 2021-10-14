@@ -135,8 +135,8 @@ const UserQuality  =async (req,res,next) =>{
     const {query} = req;
   
     const schema = Joi.object().options({ abortEarly: false }).keys({
-        StartDate: Joi.date().required(),
-        EndDate: Joi.date().required(),
+        StartDate: Joi.date().optional(),
+        EndDate: Joi.date().optional(),
         Duration: Joi.number().optional()
     });
   
@@ -156,11 +156,38 @@ const UserQuality  =async (req,res,next) =>{
       }
 
 }
+const UserAssistanceAverage  =async (req,res,next) =>{
+    const {query} = req;
+  
+    const schema = Joi.object().options({ abortEarly: false }).keys({
+        StartDate: Joi.date().optional(),
+        EndDate: Joi.date().optional(),
+        Duration: Joi.number().optional()
+    });
+  
+    let {error, value} = schema.validate(query)
+    
+    if(error)
+    {
+        return handleError(res,next,error.details)
+    }
+
+    try {
+        var data =await ReviewService.UserAssistanceAverageAsync(value);
+        handleSuccess(res,data,next);
+      } catch(e) {
+        console.log(e.message)
+        handleError(res,next,e.message)
+      }
+
+}
+
 
 export default {
 ReviewAssistance,
 AirportRatings,
 AirlineRatings,
 UserQuality,
-GetMostRecentWords
+GetMostRecentWords,
+UserAssistanceAverage
 }

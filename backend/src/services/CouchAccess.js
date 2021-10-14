@@ -121,6 +121,24 @@ const GetUserQualityRatings = async ()=>{
             
         }, 
         fields: ['quality','date'],
+        limit:100
+    })
+
+    // here we need to filter words 
+    var data = files.docs.map(d => { d.date = getDate(d.date);
+        return d
+     })
+    return data
+}
+
+const GetUserAssistanceAverage = async ()=>{
+
+    var files =await AirportsServiceReview.find({
+        selector: {
+            
+        }, 
+        fields: ['staff','date'],
+        limit:100
     })
 
     // here we need to filter words 
@@ -130,4 +148,4 @@ const GetUserQualityRatings = async ()=>{
     return data
 }
       
-export default {createReview,GetAirportsServiceReview,GetAirlineServiceReview,GetMostRecentWords,GetUserQualityRatings}
+export default {createReview,GetAirportsServiceReview,GetAirlineServiceReview,GetMostRecentWords,GetUserQualityRatings,GetUserAssistanceAverage}

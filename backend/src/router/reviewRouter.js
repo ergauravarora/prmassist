@@ -18,4 +18,7 @@ ReviewRoute.get('/GetMostRecentWords/:code',ReviewController.GetMostRecentWords)
 //Daily average rating will be stored in DB 
 ReviewRoute.get('/UserQuality',ReviewController.UserQuality)
 
+ReviewRoute.get('/UserAssistance',ReviewController.UserAssistanceAverage)
+
+
 export default ReviewRoute
