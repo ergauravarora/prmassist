@@ -51,17 +51,25 @@ const createReview =async (review) =>
 const addAirportsServiceReview=async (data)=>{
             if(data.comments)
             {
-                addMostRecentWords(data.comments)
+               await addMostRecentWords(data.comments)
             }
     var files =await AirportsServiceReview.insert(data);
     return files;
 }
 const addAirlineServiceReview=async (data)=>{
+    if(data.comments)
+    {
+       await addMostRecentWords(data.comments)
+    }
     var files =await AirlineServiceReview.insert(data);
     return files;
 }
 
 const addPrmassistReview=async (data)=>{
+    if(data.comments)
+    {
+       await addMostRecentWords(data.comments)
+    }
     var files =await PrmassistReview.insert(data);
     return files;
 }
@@ -165,8 +173,19 @@ const GetMostRecentWords =async ()=>{
         selector: {
             
         }, 
-        fields: ['word', 'count'],
+        fields: ['key', 'count'],
     })
+
+    // var exludedKeywords = []
+
+    // var ExcludedWordsListObject = await ExcludedWords.find({
+    //     selector:{},
+    //     fields:['word']
+    // });
+
+    // ExcludedWordsListObject.docs.forEach(function(obj){
+    //     exludedKeywords.push(obj.word);
+    // })
 
     // here we need to filter words 
     return files.docs
