@@ -51,25 +51,25 @@ const createReview =async (review) =>
 const addAirportsServiceReview=async (data)=>{
             if(data.comments)
             {
-               await addMostRecentWords(data.comments)
+               await addMostRecentWords(data.comments,data.airport)
             }
     var files =await AirportsServiceReview.insert(data);
     return files;
 }
 const addAirlineServiceReview=async (data)=>{
-    if(data.comments)
-    {
-       await addMostRecentWords(data.comments)
-    }
+    // if(data.comments)
+    // {
+    //    await addMostRecentWords(data.comments)
+    // }
     var files =await AirlineServiceReview.insert(data);
     return files;
 }
 
 const addPrmassistReview=async (data)=>{
-    if(data.comments)
-    {
-       await addMostRecentWords(data.comments)
-    }
+    // if(data.comments)
+    // {
+    //    await addMostRecentWords(data.comments)
+    // }
     var files =await PrmassistReview.insert(data);
     return files;
 }
@@ -97,7 +97,7 @@ const GetAirlineServiceReview =async (code)=>{
 
 
 
-const addMostRecentWords=async (string)=>{
+const addMostRecentWords=async (string,airportCode)=>{
 
     var obj =[]
     var  SplittedStringArrayWithoutExluded= string.split(' ');
@@ -106,7 +106,9 @@ const addMostRecentWords=async (string)=>{
     var exludedKeywords = []
 
     var ExcludedWordsListObject = await ExcludedWords.find({
-        selector:{},
+        selector:{
+            airportCode:airportCode
+        },
         fields:['word']
     });
 
@@ -118,7 +120,7 @@ const addMostRecentWords=async (string)=>{
         {
             var flag = 0;
     exludedKeywords.forEach(word => {
-        if(item === word)
+        if(item.toLowerCase() === word.toLowerCase())
         {
             flag ++;
         }
@@ -142,7 +144,8 @@ const addMostRecentWords=async (string)=>{
     obj.forEach(async ob => {
         var data = await MostRecentWords.find({
             selector: {
-                key:ob.key
+                key:ob.key,
+                airportCode:airportCode
             }, 
             fields: ['key', 'count','_rev','_id'],
         })
@@ -154,11 +157,11 @@ const addMostRecentWords=async (string)=>{
             let UpdatedCount = data.docs[0].count + ob.count
             let obj = {...ob,_rev:rev,_id: id,count:UpdatedCount}
             
-            await MostRecentWords.insert(obj)
+            await MostRecentWords.insert({...obj,airportCode:airportCode})
         }
         else
         {
-            await MostRecentWords.insert(ob)
+            await MostRecentWords.insert({...ob,airportCode:airportCode})
         }
         
     })
@@ -167,28 +170,43 @@ const addMostRecentWords=async (string)=>{
     return [];
 }
 
-const GetMostRecentWords =async ()=>{
+const GetMostRecentWords =async (airportCode)=>{
 
     var files =await MostRecentWords.find({
         selector: {
-            
+            airportCode:airportCode
         }, 
         fields: ['key', 'count'],
     })
 
-    // var exludedKeywords = []
+    var exludedKeywords = []
 
-    // var ExcludedWordsListObject = await ExcludedWords.find({
-    //     selector:{},
-    //     fields:['word']
-    // });
+    var ExcludedWordsListObject = await ExcludedWords.find({
+        selector:{
+            airportCode:airportCode
+        },
+        fields:['word']
+    });
 
-    // ExcludedWordsListObject.docs.forEach(function(obj){
-    //     exludedKeywords.push(obj.word);
-    // })
+    ExcludedWordsListObject.docs.forEach(function(obj){
+        exludedKeywords.push(obj.word);
+    })
+
+    var SplittedStringArray = files.docs.filter(item => 
+        {
+            var flag = 0;
+    exludedKeywords.forEach(word => {
+        if(item.key.toLowerCase() === word.toLowerCase())
+        {
+            flag ++;
+        }
+            })
+           
+            return flag === 0
+        })
 
     // here we need to filter words 
-    return files.docs
+    return SplittedStringArray
 }
 
 

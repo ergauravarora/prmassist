@@ -25,7 +25,7 @@ const GetAirlineRating=async (code)=>{
 
 const GetMostRecentWordsAsync=async (code)=>{
     
-    var MostRecentWordsArray =await CouchAccess.GetMostRecentWords();
+    var MostRecentWordsArray =await CouchAccess.GetMostRecentWords(code);
     return MostRecentWordsArray;
 }
 
