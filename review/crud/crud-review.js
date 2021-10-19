@@ -1,14 +1,16 @@
-const review = require('nano')('http://localhost:5984/_utils/#database/review_for_assistance/');
+const nano = require('nano')(process.env.COUCHDB_URL || 'http://bharat:root@127.0.0.1:5984');
 
 
+var review = nano.use('review');
 
 
 const create = (reviewData) => {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await review.insert(reviewData);
-            resolve(response);
+            resolve(response);  
         } catch (e) {
+            console.log(e);
             reject(e);
         }
     });
@@ -20,6 +22,7 @@ const read = (selector) => {
             const response = await review.find(selector);
             resolve(response.docs);
         } catch (e) {
+            console.log(e);
             reject(e);
         }
     });
@@ -30,6 +33,8 @@ const update = () => {
         try {
             resolve();
         } catch (e) {
+            console.log(e);
+            reject(e);
         }
     });
 };
@@ -39,6 +44,8 @@ const _delete = () => {
         try {
             resolve();
         } catch (e) {
+            console.log(e);
+            reject(e);
         }
     });
 };
