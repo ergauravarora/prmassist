@@ -1,0 +1,271 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+	"version": "1.0.0",
+	"title": "PRMAssist Support Microservice REST API",
+	"description": "API for the Microservice for saving feedback/contact us/testers"
+    },
+    "servers": [
+	{
+	    "url": "http://localhost:3080"
+	}
+    ],
+    "components" : {
+	"parameters" : {
+	},
+	"responses": {
+	    "InternalError": {
+		"description": "Server error",
+		"content" : {
+		    "application/problem+json" : {
+			"schema": {
+			    "$ref" : "#/components/schemas/Error"
+			}
+		    }
+		}
+	    },
+	    "BadRequest" : {
+		"description" : "Invalid or missing fields",
+		"content" : {
+		    "application/problem+json" : {
+			"schema" : {
+			    "$ref" : "#/components/schemas/Error"
+			}
+		    }
+		}
+	    },
+	    "NotFoundError": {
+		"description": "Resource does not exist",
+		"content": {
+		    "application/problem+json": {
+			"schema": {
+			    "$ref": "#/components/schemas/Error"
+			}
+		    }
+		}
+	    },
+	    "ValidationError": {
+		"description": "Validation error (e.g. Required field missing)",
+		"content": {
+		    "application/problem+json": {
+			"schema": {
+			    "$ref": "#/components/schemas/Error"
+			}
+		    }
+		}
+	    },
+	    "NoContent": {
+		"description": "no content"
+	    }
+	},
+	"schemas" :{
+	    "Error": {
+		"type" : "object",
+		"required": [ "errors" ],
+		"properties" : {
+		    "errors" : {
+			"type" : "array",
+			"items" : { "$ref" : "#/components/schemas/ErrorDetail" }
+		    }
+		}
+	    },
+	    "ErrorDetail" : {
+		"type" : "object",
+		"required" : [],
+		"properties" : {
+		    "value" : {
+			"type": "string",
+			"description" : "Value containing error"
+		    },
+		    "msg" : {
+			"type" : "string",
+			"description" : "Error message"
+		    },
+		    "param" : {
+			"type" : "string",
+			"description" : "Parameter containing error"
+		    },
+		    "location" : {
+			"type" : "string",
+			"description" : "Location of error in HTTP request"
+		    }
+		}
+	    },
+	    "TesterDetails" : {
+		"type" : "object",
+		"required" : ["name", "email", "platform"],
+		"properties" : {
+		    "name" : {
+			"type": "string",
+			"description" : "Tester's full name",
+			"example" : "Joe Bloggs"
+		    },
+		    "email" : {
+			"type" : "string",
+			"description" : "Tester's email address",
+			"example" : "joebloggs@example.com"
+		    },
+		    "platform" : {
+			"$ref" : "#/components/schemas/Platform"
+		    }
+		}
+	    },	    
+	    "Platform" : {
+		"type" : "string",
+		"description" : "Describes which OS the tester's phone is running",
+		"enum" : ["ios", "android"]
+	    },
+	    "ContactDetails" : {
+		"type" : "object",
+		"required" : ["name", "email", "company", "message"],
+		"properties" : {
+		    "name" : {
+			"type" : "string",
+			"description" : "Name of the person filing the query",
+			"example" : "Joe Bloggs"
+		    },
+		    "email" : {
+			"type" : "string",
+			"description" : "Their email",
+			"example" : "joebloggs@example.com"
+		    },
+		    "company" : {
+			"type" : "string",
+			"description" : "Their company name",
+			"example" : "Joe Bloggs Limited"
+		    },
+		    "message" : {
+			"type" : "string",
+			"description" : "Their message or query",
+			"example" : "Writing to find out how to get in touch with the team at PRM Assist"
+		    }		    
+		}
+	    },
+	    "FeedbackDetails" : {
+		"type" : "object",
+		"required" : ["userId", "name", "subject", "message"],
+		"properties" : {
+		    "userId" : {
+			"type" : "string",
+			"description" : "User firebase UID",
+			"example" : "Xsdwf9fwnpsqon"
+		    },
+		    "name" : {
+			"type" : "string",
+			"description" : "Name of the person filing the feedback",
+			"example" : "Joe Bloggs"
+		    },
+		    "subject" : {
+			"type" : "string",
+			"description" : "Subject of feedback",
+			"example" : "UI bug"
+		    },
+		    "message" : {
+			"type" : "string",
+			"description" : "Their message or feedback",
+			"example" : "There is a bug on the my trips page of the app."
+		    }		    
+		}
+	    }	    
+	}
+    },
+    "paths" : {
+	"/testers" : {
+	    "post" : {
+		"summary" : "Save a tester's details",
+		"operationId" : "posttester",
+		"tags" : ["testers"],
+		"requestBody" : {
+		    "required" : true,
+		    "content" : {
+			"application/json" : {
+			      "schema": {
+				"$ref": "#/components/schemas/TesterDetails"
+			    }
+			}
+		    }
+		},
+		"responses" : {
+		    "201" : {
+			"description" : "Saved Tester",
+			"content" : {
+			    "application/json" : {
+			    }
+			}
+		    },
+		    "400" : {
+			"$ref" : "#/components/responses/BadRequest"
+		    },
+		    "500": {
+			"$ref" : "#/components/responses/InternalError"
+		    }
+		}
+	    }
+	},
+	"/contact" : {
+	    "post" : {
+		"summary" : "Save a contact us query",
+		"operationId" : "postcontact",
+		"tags" : ["contact"],
+		"requestBody" : {
+		    "required" : true,
+		    "content" : {
+			"application/json" : {
+			      "schema": {
+				"$ref": "#/components/schemas/ContactDetails"
+			    }
+			}
+		    }
+		},
+		"responses" : {
+		    "201" : {
+			"description" : "Saved Contact query",
+			"content" : {
+			    "application/json" : {
+			    }
+			}
+		    },
+		    "400" : {
+			"$ref" : "#/components/responses/BadRequest"
+		    },
+		    "500": {
+			"$ref" : "#/components/responses/InternalError"
+		    }
+		}
+	    }
+	},
+	"/feedback" : {
+	    "post" : {
+		"summary" : "Save feedback from the app",
+		"operationId" : "postfeedback",
+		"tags" : ["feedback"],
+		"requestBody" : {
+		    "required" : true,
+		    "content" : {
+			"application/json" : {
+			      "schema": {
+				"$ref": "#/components/schemas/FeedbackDetails"
+			    }
+			}
+		    }
+		},
+		"responses" : {
+		    "201" : {
+			"description" : "Saved feedbackquery",
+			"content" : {
+			    "application/json" : {
+			    }
+			}
+		    },
+		    "400" : {
+			"$ref" : "#/components/responses/BadRequest"
+		    },
+		    "500": {
+			"$ref" : "#/components/responses/InternalError"
+		    }
+		}
+	    }
+	}	
+    }
+}
+	
