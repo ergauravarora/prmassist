@@ -18,12 +18,12 @@ const createDB =(dbname)=>
       });
 }
 
-const createReview =async (review) =>
+const createReview =async (review,airportCode) =>
 {
-    var DepartureAirportsServiceReview =    await addAirportsServiceReview({...review.departure,airport:review.departureAirport,date:new Date()});
-        var ArrivalAirportsServiceReview =  await addAirportsServiceReview({...review.arrival,airport:review.arrivalAirport,date:new Date()});
-        var AirlineServiceReview =          await addAirlineServiceReview({...review.flight,airline:review.airline,date:new Date()});
-        var PrmassistReview=                await addPrmassistReview({...review.prmassist,bookingId:review.bookingId,date:new Date()});
+    var DepartureAirportsServiceReview =    await addAirportsServiceReview({...review.departure,airport:review.departureAirport,date:new Date(),airportCode:airportCode});
+        var ArrivalAirportsServiceReview =  await addAirportsServiceReview({...review.arrival,airport:review.arrivalAirport,date:new Date(),airportCode:airportCode});
+        var AirlineServiceReview =          await addAirlineServiceReview({...review.flight,airline:review.airline,date:new Date(),airportCode:airportCode});
+        var PrmassistReview=                await addPrmassistReview({...review.prmassist,bookingId:review.bookingId,date:new Date(),airportCode:airportCode});
         if(ArrivalAirportsServiceReview.ok && DepartureAirportsServiceReview.ok && AirlineServiceReview.ok && PrmassistReview.ok)
         {
             var reviewData = {...review};
@@ -36,7 +36,8 @@ const createReview =async (review) =>
                 arrivalReviewID:ArrivalAirportsServiceReview.id,
                 flightReviewID:AirlineServiceReview.id,
                 prmassistReviewID:PrmassistReview.id,
-                date:new Date()
+                date:new Date(),
+                airportCode:airportCode
             }
             
             var resp = await ReviewForAssistance.insert(reviewData, review.bookingId);
@@ -57,19 +58,19 @@ const addAirportsServiceReview=async (data)=>{
     return files;
 }
 const addAirlineServiceReview=async (data)=>{
-    // if(data.comments)
-    // {
-    //    await addMostRecentWords(data.comments)
-    // }
+    if(data.comments)
+            {
+               await addMostRecentWords(data.comments,data.airport)
+            }
     var files =await AirlineServiceReview.insert(data);
     return files;
 }
 
 const addPrmassistReview=async (data)=>{
-    // if(data.comments)
-    // {
-    //    await addMostRecentWords(data.comments)
-    // }
+    if(data.comments)
+            {
+               await addMostRecentWords(data.comments,data.airport)
+            }
     var files =await PrmassistReview.insert(data);
     return files;
 }
@@ -211,11 +212,11 @@ const GetMostRecentWords =async (airportCode)=>{
 
 
 
-const GetUserQualityRatings = async ()=>{
+const GetUserQualityRatings = async (code)=>{
 
     var files =await AirportsServiceReview.find({
         selector: {
-            
+            airport:code
         }, 
         fields: ['quality','date'],
         limit:100
@@ -228,12 +229,12 @@ const GetUserQualityRatings = async ()=>{
     return data
 }
 
-const GetUserAssistanceAverage = async ()=>{
+const GetUserAssistanceAverage = async (code)=>{
 
     var files =await AirportsServiceReview.find({
         selector: {
-            
-        }, 
+            airport:code
+        },  
         fields: ['staff','date'],
         limit:100
     })

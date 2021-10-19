@@ -1,8 +1,8 @@
 import CouchAccess from "./CouchAccess.js"
 import helper from '../helper/response.js'
 
-const SetReviewAssistance =async  (value) =>{
-    var response = await CouchAccess.createReview(value);
+const SetReviewAssistance =async  (value,AirportCodevalue) =>{
+    var response = await CouchAccess.createReview(value,AirportCodevalue);
     return response;
 }
 const GetAirportRating=async (code) =>{
@@ -29,7 +29,7 @@ const GetMostRecentWordsAsync=async (code)=>{
     return MostRecentWordsArray;
 }
 
-const UserQualityAsync =async ({StartDate,EndDate,Duration})=>{
+const UserQualityAsync =async (code)=>{
    
     
 //     var Difference_In_Time = EndDate.getTime() - StartDate.getTime();
@@ -38,7 +38,7 @@ const UserQualityAsync =async ({StartDate,EndDate,Duration})=>{
 // var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 // var slots = Difference_In_Days / (Duration || 7)
 
-var data =await CouchAccess.GetUserQualityRatings();
+var data =await CouchAccess.GetUserQualityRatings(code);
 var newarray = [];
 data.map(d => 
     {
@@ -122,10 +122,10 @@ MonthSepratedRating.push({month:selected.month,data:array.filter(d => new Date(d
     return MonthSepratedRating;
 }
 
-const UserAssistanceAverageAsync =async ()=>{
+const UserAssistanceAverageAsync =async (code)=>{
    
 
-    var data =await CouchAccess.GetUserAssistanceAverage();
+    var data =await CouchAccess.GetUserAssistanceAverage(code);
     var newarray = [];
     data.map(d => 
         {

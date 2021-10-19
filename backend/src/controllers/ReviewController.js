@@ -5,8 +5,15 @@ import ReviewService from "../services/ReviewService.js";
 const {handleError,handleSuccess} = globalResponse
 
 const ReviewAssistance =async (req,res,next) =>{
-    const {body} = req;
+    const {body,params} = req;
+    
   
+    const schemaForAirportCode = Joi.object().options({ abortEarly: false }).keys({
+        code: Joi.string().optional(),
+    });
+  
+    
+
     const schema = Joi.object().options({ abortEarly: false }).keys({
         bookingId: Joi.string().required(),
         age: Joi.string().required(),
@@ -37,7 +44,7 @@ const ReviewAssistance =async (req,res,next) =>{
             comments: Joi.string().optional()
         }).required()
     });
-  
+   
     let {error, value} = schema.validate(body)
     
     if(error)
@@ -46,8 +53,15 @@ const ReviewAssistance =async (req,res,next) =>{
         return handleError(res,next,error.details)
     }
 
+    let {AirportCodeError, AirportCodevalue} = schemaForAirportCode.validate(params)
+    
+    if(AirportCodeError)
+    {
+        return handleError(res,next,error.details)
+    }
+  
     try {
-        var data =await ReviewService.SetReviewAssistance(value);
+        var data =await ReviewService.SetReviewAssistance(value,AirportCodevalue);
         handleSuccess(res,data,next);
       } catch(e) {
         console.log(e.message)
@@ -132,15 +146,13 @@ const GetMostRecentWords =async (req,res,next) =>{
 }
 
 const UserQuality  =async (req,res,next) =>{
-    const {query} = req;
+    const {params} = req;
   
     const schema = Joi.object().options({ abortEarly: false }).keys({
-        StartDate: Joi.date().optional(),
-        EndDate: Joi.date().optional(),
-        Duration: Joi.number().optional()
+        code: Joi.string().required(),
     });
   
-    let {error, value} = schema.validate(query)
+    let {error, value} = schema.validate(params)
     
     if(error)
     {
@@ -157,15 +169,13 @@ const UserQuality  =async (req,res,next) =>{
 
 }
 const UserAssistanceAverage  =async (req,res,next) =>{
-    const {query} = req;
+    const {params} = req;
   
     const schema = Joi.object().options({ abortEarly: false }).keys({
-        StartDate: Joi.date().optional(),
-        EndDate: Joi.date().optional(),
-        Duration: Joi.number().optional()
+        code: Joi.string().required(),
     });
   
-    let {error, value} = schema.validate(query)
+    let {error, value} = schema.validate(params)
     
     if(error)
     {
