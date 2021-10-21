@@ -218,7 +218,7 @@ const GetUserQualityRatings = async (code)=>{
         selector: {
             airport:code
         }, 
-        fields: ['quality','date'],
+        fields: ['quality','date','airport'],
         limit:100
     })
 

@@ -9,10 +9,10 @@ router.post('/ReviewAssistance', [
     body('departureAirport').isString().notEmpty().trim().escape(),
     body('arrivalAirport').isString().notEmpty().trim().escape(),
     body('airline').isString().notEmpty().trim().escape(),
-    body('departure').isObject().notEmpty().trim().escape(),
-    body('arrival').isObject().notEmpty().trim().escape(),
-    body('flight').isObject().notEmpty().trim().escape(),
-    body('prmassist').isObject().notEmpty().trim().escape()
+    body('departure').notEmpty(),
+    body('arrival').notEmpty(),
+    body('flight').notEmpty(),
+    body('prmassist').notEmpty()
 ], (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
