@@ -28,10 +28,11 @@ const read = (selector) => {
     });
 };
 
-const update = () => {
+const update = (clubData) => {
     return new Promise(async (resolve, reject) => {
         try {
-            resolve();
+            const response = await club.insert(clubData);
+            resolve(response);  
         } catch (e) {
             console.log(e);
             reject(e);
@@ -39,10 +40,12 @@ const update = () => {
     });
 };
 
-const _delete = () => {
+const _delete = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            resolve();
+
+            const response = await club.destroy(id)
+            resolve(response);
         } catch (e) {
             console.log(e);
             reject(e);
