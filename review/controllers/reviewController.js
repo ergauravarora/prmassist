@@ -64,9 +64,10 @@ const addReviewAssistance = async (req, res, next) => {
 
 const AirportAverageDailyAssistance = async (req, res, next) => {
     try {
+        var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDate('DUB',"2021-10-18T00:00:00.000Z","2021-10-21T00:00:00.000Z"))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDate(code,startDate,endDate))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -122,9 +123,10 @@ const AirportAverageDailyAssistance = async (req, res, next) => {
 };
 const AirportAverageDailyQuality = async (req, res, next) => {
     try {
+        var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForQuality('DUB',"2021-10-18T00:00:00.000Z","2021-10-21T00:00:00.000Z"))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForQuality(code,startDate,endDate))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -180,9 +182,10 @@ const AirportAverageDailyQuality = async (req, res, next) => {
 };
 const AirportAverageDailyRating = async (req, res, next) => {
     try {
+        var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForFacilities('DUB',"2021-10-18T00:00:00.000Z","2021-10-21T00:00:00.000Z"))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForFacilities(code,startDate,endDate))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -238,7 +241,7 @@ const AirportAverageDailyRating = async (req, res, next) => {
 };
 const AirportThreeMonthData = async (req, res, next) => {
     
-    var {first,second,third} = req.query;
+    var {first,second,third,code} = req.query;
 
         try {
             var ThreeMonthAvg = [
@@ -255,7 +258,7 @@ const AirportThreeMonthData = async (req, res, next) => {
             var Response  = [];
             var startDate = "2021-"+ThreeMonthAvg[i].month+"-01T00:00:00.000Z";
             var endDate = "2021-"+ThreeMonthAvg[i].month+"-31T00:00:00.000Z"
-            data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForAvg('DUB',new Date(startDate),new Date(endDate) ))
+            data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForAvg(code,new Date(startDate),new Date(endDate) ))
             var resp = data.map(d => { d.date = utils.getDate(d.date);
                 return d
              })
