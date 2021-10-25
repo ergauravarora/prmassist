@@ -104,7 +104,7 @@ const AirportAverageDailyAssistance = async (req, res, next) => {
         data.filter(d => {
             if(d.date === n.date)
             {
-                sum+= d.staff
+                sum+= Number(d.staff) 
             }
         });
         
@@ -163,7 +163,7 @@ const AirportAverageDailyQuality = async (req, res, next) => {
         data.filter(d => {
             if(d.date === n.date)
             {
-                sum+= d.quality
+                sum+= Number(d.quality)
             }
         });
         
@@ -222,7 +222,7 @@ const AirportAverageDailyRating = async (req, res, next) => {
         data.filter(d => {
             if(d.date === n.date)
             {
-                sum+= d.facilities
+                sum+= Number(d.facilities)
             }
         });
         
