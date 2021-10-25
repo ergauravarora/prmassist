@@ -44,7 +44,8 @@ const _delete = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
 
-            const response = await club.destroy(id)
+            var record =await club.get(id);
+            const response = await club.destroy(record._id,record._rev)
             resolve(response);
         } catch (e) {
             console.log(e);

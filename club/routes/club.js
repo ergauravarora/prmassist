@@ -3,6 +3,8 @@ const router = express.Router();
 const clubController = require('../controllers/clubController');
 const { body, validationResult } = require('express-validator');
 
+
+
 router.post('/reward', [
     body('iata').isString().notEmpty().trim().escape(),
     body('retailer').isString().notEmpty().trim().escape(),

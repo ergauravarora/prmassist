@@ -1,0 +1,47 @@
+doctype html
+html(lang='en')
+  head
+    title Staff Directory
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.css')
+    style.
+      table.ui.celled img { display: inline-block; }
+      footer { margin: 35px 0 15px 0; text-align: center }
+      .head {color: gray;font-weight: bolder;}
+      table tr td {border:none}
+  body
+    main#main
+    h1.ui.center.aligned.header PRM Booking Request 
+    .ui.container
+      table.ui.celled.table
+        thead
+          tr
+            th
+                h3 Personal Detail
+            th 
+                h3 Flight Detail
+            th 
+                h3 Assistance Requested
+        tbody
+            tr
+              td.head Name 
+              td.head Flight Number
+              td -
+            tr
+              td #{name} 
+              td #{flightConfirmationDetails.flightNumber}#{flightConfirmationDetails.carrierCode} #{flightConfirmationDetails.origin} - #{flightConfirmationDetails.destination}  
+              td  
+                ul 
+                - for (var i = 0; i < assistance.length; ++i) {
+                li #{assistance[i]} 
+                - }
+        
+            tr
+              td  
+              td.head Date
+              td 
+            tr
+              td  
+              td #{flightConfirmationDetails.departureDate}
+              td 
+    footer
+      a  Conform Booking 

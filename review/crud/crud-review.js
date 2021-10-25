@@ -1,7 +1,21 @@
-const nano = require('nano')(process.env.COUCHDB_URL || 'http://bharat:root@127.0.0.1:5984');
+const nano = require('nano')(process.env.COUCHDB_URL || 'http://admin:admin@127.0.0.1:5984');
 
 
 var review = nano.use('review');
+var airports_service_review = nano.use('airports_service_review');
+
+const findAirportsServiceReview = (selector) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await airports_service_review.find(selector);
+            console.log(response)
+            resolve(response.docs);
+        } catch (e) {
+            console.log(e);
+            reject(e);
+        }
+    });
+}
 
 
 const create = (reviewData) => {
@@ -51,5 +65,5 @@ const _delete = () => {
 };
 
 module.exports = {
-    create, read, update, _delete
+    create, read, update, _delete ,findAirportsServiceReview
 };

@@ -21,4 +21,43 @@ router.post('/ReviewAssistance', [
     next();
 }, reviewController.addReviewAssistance);
 
+router.get('/AirportAverageDailyAssistance',[], (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    next();
+},reviewController.AirportAverageDailyAssistance)
+
+router.get('/AirportAverageDailyQuality',[], (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    next();
+},reviewController.AirportAverageDailyQuality)
+
+router.get('/AirportAverageDailyRating',[], (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    next();
+},reviewController.AirportAverageDailyRating)
+
+router.get('/AirportThreeMonthData',[], (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    next();
+}
+,reviewController.AirportThreeMonthData)
+
+
+//GET /AirportAverageDailyAssistance/{startDate, endDate, IATA}
+//GET /AirportAverageDailyQuality/{startDate, endDate, IATA}
+//GET /AirportAverageDailyRating/{startDate, endDate, IATA}
+//GET /AirportThreeMonthData/{months, IATA}
+
 module.exports = router;

@@ -1,25 +1,13 @@
-const addAirportsServiceReview=async (data)=>{
-    if(data.comments)
-    {
-       await addMostRecentWords(data.comments,data.airport)
-    }
-var files =await AirportsServiceReview.insert(data);
-return files;
-}
-const addAirlineServiceReview=async (data)=>{
-if(data.comments)
-    {
-       await addMostRecentWords(data.comments,data.airport)
-    }
-var files =await AirlineServiceReview.insert(data);
-return files;
+const getDate = (date) =>{
+
+    var x = date.split('T')[0];
+    var y = date.split('T')[0];
+    var month = y.split('-')[1]  > 9 ? y.split('-')[1] : '0'+y.split('-')[1];
+    var day = x.split('-')[0]
+    var year = x.split('-')[2]
+    return day+'-'+month+'-'+year
 }
 
-const addPrmassistReview=async (data)=>{
-if(data.comments)
-    {
-       await addMostRecentWords(data.comments,data.airport)
-    }
-var files =await PrmassistReview.insert(data);
-return files;
+module.exports = {
+    getDate
 }

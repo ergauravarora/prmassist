@@ -1,0 +1,336 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "PRMAssist Support Microservice REST API",
+    "description": "API for the Microservice for saving feedback/contact us/testers"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/club"
+    }
+  ],
+  "components": {
+    "parameters": {},
+    "responses": {
+      "InternalError": {
+        "description": "Server error",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Invalid or missing fields",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Resource does not exist",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Validation error (e.g. Required field missing)",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NoContent": {
+        "description": "no content"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": ["errors"],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ErrorDetail" }
+          }
+        }
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value containing error"
+          },
+          "msg": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "param": {
+            "type": "string",
+            "description": "Parameter containing error"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location of error in HTTP request"
+          }
+        }
+      },
+      "rewardDetails": {
+        "type": "object",
+        "required": [
+          "iata",
+          "retailer",
+          "title",
+          "description",
+          "category",
+          "start",
+          "end",
+          "photo"
+        ],
+        "properties": {
+          "iata": {
+            "type": "string",
+            "description": "Airport Code",
+            "example": "DUB"
+          },
+          "retailer": {
+            "type": "string",
+            "description": "retailer",
+            "example": "retailer"
+          },
+          "title": {
+            "type": "string",
+            "description": "title",
+            "example": "title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "category": {
+            "type": "string",
+            "description": "category",
+            "example": "category"
+          },
+          "start": {
+            "type": "string",
+            "description": "start",
+            "example": "start"
+          },
+          "end": {
+            "type": "string",
+            "description": "end",
+            "example": "end"
+          },
+          "photo": {
+            "type": "string",
+            "description": "photo",
+            "example": "photo"
+          }
+        }
+      },
+      "rewardDetailsUpdate": {
+        "type": "object",
+        "required": [
+          "iata",
+          "retailer",
+          "title",
+          "description",
+          "category",
+          "start",
+          "end",
+          "photo",
+          "_rev"
+        ],
+        "properties": {
+          "_rev": {
+            "type": "string",
+            "description": "rev id",
+            "example": "rev"
+          },
+          "iata": {
+            "type": "string",
+            "description": "Airport Code",
+            "example": "DUB"
+          },
+          "retailer": {
+            "type": "string",
+            "description": "retailer",
+            "example": "retailer"
+          },
+          "title": {
+            "type": "string",
+            "description": "title",
+            "example": "title"
+          },
+          "description": {
+            "type": "string",
+            "description": "description",
+            "example": "description"
+          },
+          "category": {
+            "type": "string",
+            "description": "category",
+            "example": "category"
+          },
+          "start": {
+            "type": "string",
+            "description": "start",
+            "example": "start"
+          },
+          "end": {
+            "type": "string",
+            "description": "end",
+            "example": "end"
+          },
+          "photo": {
+            "type": "string",
+            "description": "photo",
+            "example": "photo"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/reward": {
+      "post": {
+        "summary": "Save a Reward details",
+        "operationId": "postreward",
+        "tags": ["reward"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rewardDetails"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a Reward details",
+        "operationId": "updatereward",
+        "tags": ["reward"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rewardDetailsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/reward/DUB": {
+      "get": {
+        "summary": "Get Reward details",
+        "operationId": "getreward",
+        "tags": ["reward"],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  }
+}
