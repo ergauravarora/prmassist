@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-
+app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use('/review',reviewRouter)
 var port = process.env.PORT || 8080;
   app.listen(port, () => console.log(`Example app listening on port ${port}!`))

@@ -3,11 +3,11 @@
     "info": {
 	"version": "1.0.0",
 	"title": "PRMAssist Support Microservice REST API",
-	"description": "API for the Microservice for saving feedback/contact us/testers"
+	"description": "API for the Microservice for Review"
     },
     "servers": [
 	{
-	    "url": "http://localhost:3080"
+	    "url": "http://localhost:8080/review/"
 	}
     ],
     "components" : {
@@ -91,181 +91,400 @@
 		    }
 		}
 	    },
-	    "TesterDetails" : {
-		"type" : "object",
-		"required" : ["name", "email", "platform"],
-		"properties" : {
-		    "name" : {
-			"type": "string",
-			"description" : "Tester's full name",
-			"example" : "Joe Bloggs"
-		    },
-		    "email" : {
-			"type" : "string",
-			"description" : "Tester's email address",
-			"example" : "joebloggs@example.com"
-		    },
-		    "platform" : {
-			"$ref" : "#/components/schemas/Platform"
-		    }
-		}
-	    },	    
-	    "Platform" : {
-		"type" : "string",
-		"description" : "Describes which OS the tester's phone is running",
-		"enum" : ["ios", "android"]
-	    },
-	    "ContactDetails" : {
-		"type" : "object",
-		"required" : ["name", "email", "company", "message"],
-		"properties" : {
-		    "name" : {
-			"type" : "string",
-			"description" : "Name of the person filing the query",
-			"example" : "Joe Bloggs"
-		    },
-		    "email" : {
-			"type" : "string",
-			"description" : "Their email",
-			"example" : "joebloggs@example.com"
-		    },
-		    "company" : {
-			"type" : "string",
-			"description" : "Their company name",
-			"example" : "Joe Bloggs Limited"
-		    },
-		    "message" : {
-			"type" : "string",
-			"description" : "Their message or query",
-			"example" : "Writing to find out how to get in touch with the team at PRM Assist"
-		    }		    
-		}
-	    },
-	    "FeedbackDetails" : {
-		"type" : "object",
-		"required" : ["userId", "name", "subject", "message"],
-		"properties" : {
-		    "userId" : {
-			"type" : "string",
-			"description" : "User firebase UID",
-			"example" : "Xsdwf9fwnpsqon"
-		    },
-		    "name" : {
-			"type" : "string",
-			"description" : "Name of the person filing the feedback",
-			"example" : "Joe Bloggs"
-		    },
-		    "subject" : {
-			"type" : "string",
-			"description" : "Subject of feedback",
-			"example" : "UI bug"
-		    },
-		    "message" : {
-			"type" : "string",
-			"description" : "Their message or feedback",
-			"example" : "There is a bug on the my trips page of the app."
-		    }		    
-		}
-	    }	    
+		"Review": {
+			"type": "object",
+			"required": [
+			  "bookingId",
+			  "age",
+			  "departureAirport",
+			  "arrivalAirport",
+			  "airline",
+			  "departure",
+			  "arrival",
+			  "flight",
+			  "prmassist"
+			],
+			"properties": {
+			  "bookingId": {
+				"type": "string",
+				"description": "booking Id",
+				"example": "BOOKING001"
+			  },
+			  "age": {
+				"type": "string",
+				"description": "age of customer",
+				"example": "25"
+			  },
+			  "departureAirport": {
+				"type": "string",
+				"description": "Departure Airport Code",
+				"example": "DUX"
+			  },
+			  "arrivalAirport": {
+				"type": "string",
+				"description": "Arrival Airport code",
+				"example": "DUB"
+			  },
+			  "airline": {
+				"type": "string",
+				"description": "airline name",
+				"example": "AX"
+			  },
+			  "departure": {
+				"type": "object",
+				"required": [
+					"quality",
+					"staff",
+					"facilities",
+					"comments"
+				  ],
+				  "properties": {
+					"quality": {
+					  "type": "string",
+					  "description": "quality rating",
+					  "example": "2"
+					},
+					"staff": {
+						"type": "string",
+						"description": "staff rating",
+						"example": "2"
+					  }
+					  ,
+					"facilities": {
+						"type": "string",
+						"description": "facilities rating",
+						"example": "2"
+					  }
+					  ,
+					"comments": {
+						"type": "string",
+						"description": "comments rating",
+						"example": "test comment"
+					  }}
+			  },
+			  "arrival": {
+				"type": "object",
+				"required": [
+					"quality",
+					"staff",
+					"facilities",
+					"comments"
+				  ],
+				  "properties": {
+					"quality": {
+					  "type": "string",
+					  "description": "quality rating",
+					  "example": "2"
+					},
+					"staff": {
+						"type": "string",
+						"description": "staff rating",
+						"example": "2"
+					  }
+					  ,
+					"facilities": {
+						"type": "string",
+						"description": "facilities rating",
+						"example": "2"
+					  }
+					  ,
+					"comments": {
+						"type": "string",
+						"description": "comments rating",
+						"example": "test comment"
+					  }}
+			  }
+			  ,
+			  "flight": {
+				"type": "object",
+				"required": [
+					"boarding",
+					"onboard",
+					"disembark",
+					"comments"
+				  ],
+				  "properties": {
+					"boarding": {
+					  "type": "string",
+					  "description": "boarding rating",
+					  "example": "2"
+					},
+					"onboard": {
+						"type": "string",
+						"description": "onboard rating",
+						"example": "2"
+					  }
+					  ,
+					"disembark": {
+						"type": "string",
+						"description": "disembark rating",
+						"example": "2"
+					  }
+					  ,
+					"comments": {
+						"type": "string",
+						"description": "comments rating",
+						"example": "test comment"
+					  }}
+			  },
+			  "prmassist": {
+				"type": "object",
+				"required": [
+					"heard",
+					"improvement",
+					"comments"
+				  ],
+				  "properties": {
+					"heard": {
+					  "type": "string",
+					  "description": "heard rating",
+					  "example": "2"
+					},
+					"improvement": {
+						"type": "string",
+						"description": "improvement rating",
+						"example": "2"
+					  }
+					  ,
+					"comments": {
+						"type": "string",
+						"description": "comments rating",
+						"example": "test comment"
+					  }}
+			  }
+			}
+		  }	    
 	}
     },
     "paths" : {
-	"/testers" : {
-	    "post" : {
-		"summary" : "Save a tester's details",
-		"operationId" : "posttester",
-		"tags" : ["testers"],
-		"requestBody" : {
-		    "required" : true,
-		    "content" : {
-			"application/json" : {
-			      "schema": {
-				"$ref": "#/components/schemas/TesterDetails"
-			    }
-			}
-		    }
+		"/AirportAverageDailyAssistance": {
+			"get": {
+				"summary": "Get Airport Average Daily Assistance",
+				"operationId": "getreward",
+				"tags": ["reward"],
+				"parameters": [
+					{
+					  "name": "code",
+					  "in": "query",
+					  "type": "string",
+					  "required": true
+					},
+					{
+						"name": "startDate",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  },
+					  {
+						"name": "endDate",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  }
+				  ],
+				
+				"requestBody": {
+				  "content": {
+					"application/json": {}
+				  }
+				},
+				"responses": {
+				  "201": {
+					"description": "Airport Average Daily Assistance Data",
+					"content": {
+					  "application/json": {}
+					}
+				  },
+				  "400": {
+					"$ref": "#/components/responses/BadRequest"
+				  },
+				  "500": {
+					"$ref": "#/components/responses/InternalError"
+				  }
+				}
+			  }
 		},
-		"responses" : {
-		    "201" : {
-			"description" : "Saved Tester",
-			"content" : {
-			    "application/json" : {
-			    }
-			}
-		    },
-		    "400" : {
-			"$ref" : "#/components/responses/BadRequest"
-		    },
-		    "500": {
-			"$ref" : "#/components/responses/InternalError"
-		    }
+		"/AirportAverageDailyQuality": {
+			"get": {
+				"summary": "Get Airport Average Daily Quality",
+				"operationId": "getQuality",
+				"tags": ["reward"],
+				"parameters": [
+					{
+					  "name": "code",
+					  "in": "query",
+					  "type": "string",
+					  "required": true
+					},
+					{
+						"name": "startDate",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  },
+					  {
+						"name": "endDate",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  }
+				  ],
+				
+				"requestBody": {
+				  "content": {
+					"application/json": {}
+				  }
+				},
+				"responses": {
+				  "201": {
+					"description": "Airport Average Daily Assistance Data",
+					"content": {
+					  "application/json": {}
+					}
+				  },
+				  "400": {
+					"$ref": "#/components/responses/BadRequest"
+				  },
+				  "500": {
+					"$ref": "#/components/responses/InternalError"
+				  }
+				}
+			  }
 		}
-	    }
-	},
-	"/contact" : {
-	    "post" : {
-		"summary" : "Save a contact us query",
-		"operationId" : "postcontact",
-		"tags" : ["contact"],
-		"requestBody" : {
-		    "required" : true,
-		    "content" : {
-			"application/json" : {
-			      "schema": {
-				"$ref": "#/components/schemas/ContactDetails"
-			    }
-			}
-		    }
+		,
+		"/AirportAverageDailyRating": {
+			"get": {
+				"summary": "Get Airport Average Daily Rating",
+				"operationId": "getRating",
+				"tags": ["reward"],
+				"parameters": [
+					{
+					  "name": "code",
+					  "in": "query",
+					  "type": "string",
+					  "required": true
+					},
+					{
+						"name": "startDate",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  },
+					  {
+						"name": "endDate",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  }
+				  ],
+				
+				"requestBody": {
+				  "content": {
+					"application/json": {}
+				  }
+				},
+				"responses": {
+				  "201": {
+					"description": "Airport Average Daily Assistance Data",
+					"content": {
+					  "application/json": {}
+					}
+				  },
+				  "400": {
+					"$ref": "#/components/responses/BadRequest"
+				  },
+				  "500": {
+					"$ref": "#/components/responses/InternalError"
+				  }
+				}
+			  }
 		},
-		"responses" : {
-		    "201" : {
-			"description" : "Saved Contact query",
-			"content" : {
-			    "application/json" : {
-			    }
-			}
-		    },
-		    "400" : {
-			"$ref" : "#/components/responses/BadRequest"
-		    },
-		    "500": {
-			"$ref" : "#/components/responses/InternalError"
-		    }
-		}
-	    }
-	},
-	"/feedback" : {
-	    "post" : {
-		"summary" : "Save feedback from the app",
-		"operationId" : "postfeedback",
-		"tags" : ["feedback"],
-		"requestBody" : {
-		    "required" : true,
-		    "content" : {
-			"application/json" : {
-			      "schema": {
-				"$ref": "#/components/schemas/FeedbackDetails"
-			    }
-			}
-		    }
+		"/AirportThreeMonthData": {
+			"get": {
+				"summary": "Get Airport Three Month Data",
+				"operationId": "getthreemonthdata",
+				"tags": ["reward"],
+				"parameters": [
+					{
+					  "name": "code",
+					  "in": "query",
+					  "type": "string",
+					  "required": true
+					},
+					{
+						"name": "first",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  },
+					  {
+						"name": "second",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  },
+					  {
+						"name": "third",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  }
+					  
+				  ],
+				
+				"requestBody": {
+				  "content": {
+					"application/json": {}
+				  }
+				},
+				"responses": {
+				  "201": {
+					"description": "Airport Average Daily Assistance Data",
+					"content": {
+					  "application/json": {}
+					}
+				  },
+				  "400": {
+					"$ref": "#/components/responses/BadRequest"
+				  },
+				  "500": {
+					"$ref": "#/components/responses/InternalError"
+				  }
+				}
+			  }
 		},
-		"responses" : {
-		    "201" : {
-			"description" : "Saved feedbackquery",
-			"content" : {
-			    "application/json" : {
-			    }
-			}
-		    },
-		    "400" : {
-			"$ref" : "#/components/responses/BadRequest"
-		    },
-		    "500": {
-			"$ref" : "#/components/responses/InternalError"
-		    }
+		"/ReviewAssistance":{
+			"post": {
+				"summary": "Save Review Assistance",
+				"operationId": "postReview",
+				"tags": ["Review"],
+				"requestBody": {
+				  "required": true,
+				  "content": {
+					"application/json": {
+					  "schema": {
+						"$ref": "#/components/schemas/Review"
+					  }
+					}
+				  }
+				},
+				"responses": {
+				  "201": {
+					"description": "Saved Review",
+					"content": {
+					  "application/json": {}
+					}
+				  },
+				  "400": {
+					"$ref": "#/components/responses/BadRequest"
+				  },
+				  "500": {
+					"$ref": "#/components/responses/InternalError"
+				  }
+				}
+			  }
 		}
-	    }
-	}	
+
     }
 }
 	
