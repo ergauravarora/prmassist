@@ -111,7 +111,7 @@
           "retailer": {
             "type": "string",
             "description": "retailer",
-            "example": "retailer"
+            "example": "retailer name"
           },
           "title": {
             "type": "string",
@@ -277,6 +277,9 @@
         }
       },
       "delete": {
+        "summary": "Delete a Reward details",
+        "operationId": "deletereward",
+        "tags": ["reward"],
         "parameters": [
           {
             "name": "id",
