@@ -19,8 +19,7 @@ module.exports = {
         return {
             selector: {
                 airport:code,
-                date: { "$gt" : startDate },
-                date:{"$lt":endDate}
+                date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportStaffService,
             limit:100
@@ -31,8 +30,7 @@ module.exports = {
         return {
             selector: {
                 airport:code,
-                date: { "$gt" : startDate },
-                date:{"$lt":endDate}
+                date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportQualityService,
             limit:100
@@ -43,8 +41,7 @@ module.exports = {
         return {
             selector: {
                 airport:code,
-                date: { "$gt" : startDate },
-                date:{"$lt":endDate}
+                date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportFacilitiesService,
             limit:100
@@ -54,8 +51,7 @@ module.exports = {
         return {
             selector: {
                 airport:code,
-                date: { "$gt" : startDate },
-                date:{"$lt":endDate}
+                date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportAvgService,
             limit:100

@@ -295,9 +295,9 @@ const AirportThreeMonthData = async (req, res, next) => {
             data.filter(d => {
                 if(d.date === n.date)
                 {
-                    sum+= d.staff;
-                    sum+= d.quality;
-                    sum+= d.facilities;
+                    sum+= Number(d.staff);
+                    sum+= Number(d.quality);
+                    sum+= Number(d.facilities);
                 }
             });
             
