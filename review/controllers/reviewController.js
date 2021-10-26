@@ -67,7 +67,7 @@ const AirportAverageDailyAssistance = async (req, res, next) => {
         var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDate(code,startDate,endDate))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDate(code,new Date(startDate),new Date(endDate)))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -126,7 +126,7 @@ const AirportAverageDailyQuality = async (req, res, next) => {
         var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForQuality(code,startDate,endDate))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForQuality(code,new Date(startDate),new Date(endDate)))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -185,7 +185,7 @@ const AirportAverageDailyRating = async (req, res, next) => {
         var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForFacilities(code,startDate,endDate))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForFacilities(code,new Date(startDate),new Date(endDate)))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })

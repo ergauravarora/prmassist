@@ -56,10 +56,10 @@ const prmassistCreate= (reviewData) => {
         }
     });
 };
-const Create= (reviewData) => {
+const Create= (reviewData,bookingId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await review_for_assistance.insert(reviewData);
+            const response = await review_for_assistance.insert(reviewData,bookingId);
             resolve(response);  
         } catch (e) {
             console.log(e);
