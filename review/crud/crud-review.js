@@ -12,7 +12,7 @@ const findAirportsServiceReview = (selector) => {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await airports_service_review.find(selector);
-            console.log(response)
+            
             resolve(response.docs);
         } catch (e) {
             console.log(e);

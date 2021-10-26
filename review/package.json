@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "gulp --gulpfile gulpfile.js"
+    "start": "gulp --gulpfile gulpfile.js",
+    "test": "node ./node_modules/mocha/bin/mocha"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "^4.16.4",
@@ -17,5 +20,8 @@
     "nano": "^9.0.5",
     "nodemailer": "^6.6.5",
     "swagger-ui-express": "^4.1.6"
+  },
+  "devDependencies": {
+    "mocha": "^9.1.3"
   }
 }

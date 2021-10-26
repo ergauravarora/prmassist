@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const reviewController = require('../controllers/reviewController');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult,query } = require('express-validator');
 
 router.post('/ReviewAssistance', [
     body('bookingId').isString().notEmpty().trim().escape(),
@@ -21,7 +21,11 @@ router.post('/ReviewAssistance', [
     next();
 }, reviewController.addReviewAssistance);
 
-router.get('/AirportAverageDailyAssistance',[], (req, res, next) => {
+router.get('/AirportAverageDailyAssistance',[
+    query('code').isString().notEmpty().trim().escape(),
+    query('endDate').isString().notEmpty().trim().escape(),
+    query('startDate').isString().notEmpty().trim().escape(),
+], (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
@@ -29,7 +33,11 @@ router.get('/AirportAverageDailyAssistance',[], (req, res, next) => {
     next();
 },reviewController.AirportAverageDailyAssistance)
 
-router.get('/AirportAverageDailyQuality',[], (req, res, next) => {
+router.get('/AirportAverageDailyQuality',[
+    query('code').isString().notEmpty().trim().escape(),
+    query('endDate').isString().notEmpty().trim().escape(),
+    query('startDate').isString().notEmpty().trim().escape(),
+], (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
@@ -37,7 +45,11 @@ router.get('/AirportAverageDailyQuality',[], (req, res, next) => {
     next();
 },reviewController.AirportAverageDailyQuality)
 
-router.get('/AirportAverageDailyRating',[], (req, res, next) => {
+router.get('/AirportAverageDailyRating',[
+    query('code').isString().notEmpty().trim().escape(),
+    query('endDate').isString().notEmpty().trim().escape(),
+    query('startDate').isString().notEmpty().trim().escape(),
+], (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});
@@ -45,7 +57,12 @@ router.get('/AirportAverageDailyRating',[], (req, res, next) => {
     next();
 },reviewController.AirportAverageDailyRating)
 
-router.get('/AirportThreeMonthData',[], (req, res, next) => {
+router.get('/AirportThreeMonthData',[
+    query('code').isString().notEmpty().trim().escape(),
+    query('first').isString().notEmpty().trim().escape(),
+    query('third').isString().notEmpty().trim().escape(),
+    query('second').isString().notEmpty().trim().escape(),
+], (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array()});

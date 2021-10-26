@@ -55,7 +55,10 @@ const addReviewAssistance = async (req, res, next) => {
                 res.status(201).json({response, msg: `Saved successfully`});
             }        
         }
-        res.status(400).json({response, msg: `Something is wrong..`});
+        else
+        {
+            res.status(400).json({response, msg: `Something is wrong..`});
+        }
     } catch (e) {
         console.log(e);
         res.status(500).json({ errors: [{ msg: e.message}]});
@@ -115,7 +118,7 @@ const AirportAverageDailyAssistance = async (req, res, next) => {
           Response.push({date:n.date,avg:avgForDayIs})
     })
 
-        res.status(201).json({Response, msg: `message`});
+        res.status(200).json({Response, msg: `message`});
     } catch (e) {
         console.log(e);
         res.status(500).json({ errors: [{ msg: e.message}]});
@@ -174,7 +177,7 @@ const AirportAverageDailyQuality = async (req, res, next) => {
           Response.push({date:n.date,avg:avgForDayIs})
     })
 
-        res.status(201).json({Response, msg: `message`});
+        res.status(200).json({Response, msg: `message`});
     } catch (e) {
         console.log(e);
         res.status(500).json({ errors: [{ msg: e.message}]});
@@ -233,7 +236,7 @@ const AirportAverageDailyRating = async (req, res, next) => {
           Response.push({date:n.date,avg:avgForDayIs})
     })
 
-        res.status(201).json({Response, msg: `message`});
+        res.status(200).json({Response, msg: `message`});
     } catch (e) {
         console.log(e);
         res.status(500).json({ errors: [{ msg: e.message}]});
@@ -313,7 +316,7 @@ const AirportThreeMonthData = async (req, res, next) => {
         }
             
     
-            res.status(201).json({ThreeMonthAvg, msg: `message`});
+            res.status(200).json({ThreeMonthAvg, msg: `message`});
         } 
         
      catch (e) {
