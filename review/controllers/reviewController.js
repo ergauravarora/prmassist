@@ -70,7 +70,7 @@ const AirportAverageDailyAssistance = async (req, res, next) => {
         var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDate(code,new Date(startDate),new Date(endDate)))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDate(code,new Date(startDate+'T00:00:00.000Z').toISOString(),new Date(endDate+'T23:59:59.999Z').toISOString()))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -129,7 +129,7 @@ const AirportAverageDailyQuality = async (req, res, next) => {
         var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForQuality(code,new Date(startDate),new Date(endDate)))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForQuality(code,new Date(startDate+'T00:00:00.000Z').toISOString(),new Date(endDate+'T23:59:59.999Z').toISOString()))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -188,7 +188,7 @@ const AirportAverageDailyRating = async (req, res, next) => {
         var {code,startDate,endDate} = req.query
         var newarray = [];
         var Response  = [];
-        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForFacilities(code,new Date(startDate),new Date(endDate)))
+        var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForFacilities(code,new Date(startDate+'T00:00:00.000Z').toISOString(),new Date(endDate+'T23:59:59.999Z').toISOString()))
         var resp = data.map(d => { d.date = utils.getDate(d.date);
             return d
          })
@@ -260,7 +260,7 @@ const AirportThreeMonthData = async (req, res, next) => {
                 var data = [];
             var Response  = [];
             var startDate = "2021-"+ThreeMonthAvg[i].month+"-01T00:00:00.000Z";
-            var endDate = "2021-"+ThreeMonthAvg[i].month+"-31T00:00:00.000Z"
+            var endDate = "2021-"+ThreeMonthAvg[i].month+"-31T23:59:59.999Z"
             data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForAvg(code,new Date(startDate),new Date(endDate) ))
             var resp = data.map(d => { d.date = utils.getDate(d.date);
                 return d

@@ -18,7 +18,7 @@ module.exports = {
     byIataAndDate:(code,startDate,endDate) => {
         return {
             selector: {
-                airport:code,
+                airportCode:code,
                 date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportStaffService,
@@ -29,7 +29,7 @@ module.exports = {
     byIataAndDateForQuality:(code,startDate,endDate) => {
         return {
             selector: {
-                airport:code,
+                airportCode:code,
                 date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportQualityService,
@@ -40,7 +40,7 @@ module.exports = {
     byIataAndDateForFacilities:(code,startDate,endDate) => {
         return {
             selector: {
-                airport:code,
+                airportCode:code,
                 date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportFacilitiesService,
@@ -50,7 +50,7 @@ module.exports = {
     byIataAndDateForAvg:(code,startDate,endDate) => {
         return {
             selector: {
-                airport:code,
+                airportCode:code,
                 date:{"$gt":startDate,"$lt":endDate},
             },  
             fields: AirportAvgService,

@@ -40,7 +40,7 @@ var review = {
 describe("#review/ReviewAssistance",() =>{
     it("should return status 500 with Update Conflict", (done)=>{
         chais.request(app)
-        .post('/review/ReviewAssistance')
+        .post('/review/ReviewAssistance?code=DUB')
         .send({...review,bookingId:"BOOKING001"})//pass object here
         .end((err,res)=>{
             expects(res.status).to.equal(500)
@@ -52,7 +52,7 @@ describe("#review/ReviewAssistance",() =>{
 describe("#review/ReviewAssistance",() =>{
     it("should return status 201 with success data save", (done)=>{
         chais.request(app)
-        .post('/review/ReviewAssistance')
+        .post('/review/ReviewAssistance?code=DUB')
         .send(review)//pass object here
         .end((err,res)=>{
             expects(res.status).to.equal(201)
@@ -64,9 +64,11 @@ describe("#review/ReviewAssistance",() =>{
 describe("#review/AirportAverageDailyAssistance",() =>{
     it("should return status 200 with success data save", (done)=>{
         chais.request(app)
-        .get('/review/AirportAverageDailyAssistance?code=WST&endDate=2021-10-31&startDate=2021-10-01')
+        .get('/review/AirportAverageDailyAssistance?code=DUB&endDate=2021-10-31&startDate=2021-10-01')
         .end((err,res)=>{
             expects(res.status).to.equal(200)
+            expects(res.body.Response.length).to.greaterThan(0)
+            //expects(res.Response.lenght).to.equal(200)
             done()
         })
         

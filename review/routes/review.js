@@ -4,6 +4,7 @@ const reviewController = require('../controllers/reviewController');
 const { body, validationResult,query } = require('express-validator');
 
 router.post('/ReviewAssistance', [
+    query('code').isString().notEmpty().trim().escape(),
     body('bookingId').isString().notEmpty().trim().escape(),
     body('age').isString().notEmpty().trim().escape(),
     body('departureAirport').isString().notEmpty().trim().escape(),
