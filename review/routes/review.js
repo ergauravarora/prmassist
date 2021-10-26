@@ -63,6 +63,7 @@ router.get('/AirportThreeMonthData',[
     query('first').isString().notEmpty().trim().escape(),
     query('third').isString().notEmpty().trim().escape(),
     query('second').isString().notEmpty().trim().escape(),
+    query('year').isString().notEmpty().trim().escape(),
 ], (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {

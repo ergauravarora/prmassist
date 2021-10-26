@@ -1,7 +1,7 @@
 const testersFields = ["name", "email", "platform"];
 const AirportStaffService = ['staff','date'];
 const AirportQualityService = ['quality','date'];
-const AirportFacilitiesService = ['facilities','date'];
+const AirportFacilitiesService = ['facilities','date','quality','staff'];
 
 const AirportAvgService = ['facilities','quality','staff','date'];
 

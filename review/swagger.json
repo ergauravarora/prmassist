@@ -429,6 +429,14 @@
 						"type": "string",
 						"required": true
 					  }
+					  ,
+					  {
+						"name": "year",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  }
+					  
 					  
 				  ],
 				

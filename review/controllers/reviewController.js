@@ -225,11 +225,13 @@ const AirportAverageDailyRating = async (req, res, next) => {
         data.filter(d => {
             if(d.date === n.date)
             {
-                sum+= Number(d.facilities)
+                    sum+= Number(d.staff);
+                    sum+= Number(d.quality);
+                    sum+= Number(d.facilities);
             }
         });
         
-        var dat = data.filter((v) => (v.date === n.date)).length
+        var dat = (data.filter((v) => (v.date === n.date)).length)*3
         
         var avgForDayIs = (sum /  dat).toFixed(1);
         
@@ -244,7 +246,7 @@ const AirportAverageDailyRating = async (req, res, next) => {
 };
 const AirportThreeMonthData = async (req, res, next) => {
     
-    var {first,second,third,code} = req.query;
+    var {first,second,third,code,year} = req.query;
 
         try {
             var ThreeMonthAvg = [
@@ -259,8 +261,8 @@ const AirportThreeMonthData = async (req, res, next) => {
                 var newarray = [];
                 var data = [];
             var Response  = [];
-            var startDate = "2021-"+ThreeMonthAvg[i].month+"-01T00:00:00.000Z";
-            var endDate = "2021-"+ThreeMonthAvg[i].month+"-31T23:59:59.999Z"
+            var startDate = year+"-"+ThreeMonthAvg[i].month+"-01T00:00:00.000Z";
+            var endDate = year+"-"+ThreeMonthAvg[i].month+"-31T23:59:59.999Z"
             data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForAvg(code,new Date(startDate),new Date(endDate) ))
             var resp = data.map(d => { d.date = utils.getDate(d.date);
                 return d
