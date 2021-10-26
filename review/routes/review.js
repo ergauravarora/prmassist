@@ -73,6 +73,17 @@ router.get('/AirportThreeMonthData',[
 }
 ,reviewController.AirportThreeMonthData)
 
+router.get('/GetMostRecentWords',[
+    query('code').isString().notEmpty().trim().escape()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    next();
+}
+,reviewController.GetMostRecentWords)
+
 
 //GET /AirportAverageDailyAssistance/{startDate, endDate, IATA}
 //GET /AirportAverageDailyQuality/{startDate, endDate, IATA}

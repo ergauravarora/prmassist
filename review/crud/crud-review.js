@@ -6,6 +6,43 @@ var airports_service_review = nano.use('airports_service_review');
 var airline_service_review = nano.use('airline_service_review');
 var prmassist_review = nano.use('prmassist_review');
 var review_for_assistance = nano.use('review_for_assistance');
+var most_recent_words = nano.use('most_recent_words');
+var excluded_words = nano.use('excluded_words');
+
+const excluded_words_find = (selector) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await excluded_words.find(selector);
+            resolve(response.docs);
+        } catch (e) {
+            console.log(e);
+            reject(e);
+        }
+    });
+};
+const most_recent_words_find = (selector) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await most_recent_words.find(selector);
+            resolve(response.docs);
+        } catch (e) {
+            console.log(e);
+            reject(e);
+        }
+    });
+};
+
+const most_recent_words_create = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await most_recent_words.insert(data);
+            resolve(response);  
+        } catch (e) {
+            console.log(e);
+            reject(e);
+        }
+    });
+};
 
 
 const findAirportsServiceReview = (selector) => {
@@ -114,5 +151,5 @@ const _delete = () => {
 };
 
 module.exports = {
-    create, read, update, _delete ,findAirportsServiceReview,airportsCreate,airlineCreate,prmassistCreate,Create
+    create, read, update, _delete ,findAirportsServiceReview,airportsCreate,airlineCreate,prmassistCreate,Create,excluded_words_find,most_recent_words_find,most_recent_words_create
 };

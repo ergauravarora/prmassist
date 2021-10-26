@@ -5,6 +5,7 @@ const utils = require('../review/index');
 
 
 const addReviewAssistance = async (req, res, next) => {
+    
     try {
         var review = req.body
         var airportCode = req.query.code
@@ -14,24 +15,29 @@ const addReviewAssistance = async (req, res, next) => {
             date:new Date(),
             airportCode:airportCode
         });        
+        await utils.addMostRecentWords(review.departure.comments,airportCode)
+
         var ArrivalAirportsServiceReview =  await reviewCrud.airportsCreate(
             {...review.arrival,
                 airport:review.arrivalAirport,
                 date:new Date(),
                 airportCode:airportCode
             });
+            await utils.addMostRecentWords(review.arrival.comments,airportCode)
         var AirlineServiceReview =          await reviewCrud.airlineCreate(
             {...review.flight,
                 airline:review.airline,
                 date:new Date(),
                 airportCode:airportCode
             });
+            await utils.addMostRecentWords(review.flight.comments,airportCode)
         var PrmassistReview=                await reviewCrud.prmassistCreate(
             {...review.prmassist,
                 bookingId:review.bookingId,
                 date:new Date(),
                 airportCode:airportCode
             });
+            await utils.addMostRecentWords(review.prmassist.comments,airportCode)
         if(ArrivalAirportsServiceReview.ok && DepartureAirportsServiceReview.ok && AirlineServiceReview.ok && PrmassistReview.ok)
         {
             var reviewData = {...review};
@@ -327,4 +333,17 @@ const AirportThreeMonthData = async (req, res, next) => {
     }
 };
 
-module.exports = { addReviewAssistance,AirportAverageDailyAssistance,AirportAverageDailyQuality,AirportAverageDailyRating,AirportThreeMonthData };
+const GetMostRecentWords = async(req,res,next) => {
+    try {
+        var airportCode = req.query.code
+        var response =await utils.GetMostRecentWords(airportCode)
+        res.status(201).json({response, msg: `List of Most Recent Word Used for ${airportCode}`});
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).json({ errors: [{ msg: e.message}]});
+    }
+    
+}
+
+module.exports = { GetMostRecentWords,addReviewAssistance,AirportAverageDailyAssistance,AirportAverageDailyQuality,AirportAverageDailyRating,AirportThreeMonthData };

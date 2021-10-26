@@ -56,5 +56,32 @@ module.exports = {
             fields: AirportAvgService,
             limit:100
         };
-    }
-};
+    },
+    byIataforExcludeWorda:(airportCode) => {
+        return {
+            selector:{
+                airportCode:airportCode
+            },
+            fields:['word']
+        }
+        }
+        ,
+    byIataforWordsbyKey:(airportCode,key) => {
+        return {
+                selector: {
+                    key:key,
+                    airportCode:airportCode
+                }, 
+                fields: ['key', 'count','_rev','_id'],
+        }
+        },
+        byIataforExcludeWordsAndCount:(airportCode) => {
+            return {
+                selector:{
+                    airportCode:airportCode
+                },
+                fields:['key', 'count']
+            }
+            }
+        
+}

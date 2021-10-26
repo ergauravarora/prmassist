@@ -461,6 +461,40 @@
 				}
 			  }
 		},
+		"/GetMostRecentWords": {
+			"get": {
+				"summary": "Get Most Recent Words",
+				"operationId": "MostRecentWords",
+				"tags": ["MostRecentWords"],
+				"parameters": [
+					{
+					  "name": "code",
+					  "in": "query",
+					  "type": "string",
+					  "required": true
+					} 
+				  ],
+				"requestBody": {
+				  "content": {
+					"application/json": {}
+				  }
+				},
+				"responses": {
+				  "200": {
+					"description": "Most Recent Key Words",
+					"content": {
+					  "application/json": {}
+					}
+				  },
+				  "400": {
+					"$ref": "#/components/responses/BadRequest"
+				  },
+				  "500": {
+					"$ref": "#/components/responses/InternalError"
+				  }
+				}
+			  }
+		},
 		"/ReviewAssistance":{
 			"post": {
 				"summary": "Save Review Assistance",
