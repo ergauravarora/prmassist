@@ -495,6 +495,52 @@
 				}
 			  }
 		},
+		"/GetTotalAverageOfMonthByIata": {
+			"get": {
+				"summary": "Get Total Average value Of one Month By the airport Iata code",
+				"operationId": "GetTotalAverageOfMonthByIata",
+				"tags": ["GetTotalAverageOfMonthByIata"],
+				"parameters": [
+					{
+					  "name": "code",
+					  "in": "query",
+					  "type": "string",
+					  "required": true
+					} ,
+					{
+						"name": "month",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  } ,
+					  {
+						"name": "year",
+						"in": "query",
+						"type": "string",
+						"required": true
+					  } 
+				  ],
+				"requestBody": {
+				  "content": {
+					"application/json": {}
+				  }
+				},
+				"responses": {
+				  "200": {
+					"description": "Current Month Avg with previous month average and change in percentage",
+					"content": {
+					  "application/json": {}
+					}
+				  },
+				  "400": {
+					"$ref": "#/components/responses/BadRequest"
+				  },
+				  "500": {
+					"$ref": "#/components/responses/InternalError"
+				  }
+				}
+			  }
+		},
 		"/ReviewAssistance":{
 			"post": {
 				"summary": "Save Review Assistance",

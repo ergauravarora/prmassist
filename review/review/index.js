@@ -1,5 +1,6 @@
 const crud = require('../crud/crud-review');
 const selector = require('../selectors/review');
+const reviewCrud = require('../crud/crud-review');
 const getDate = (date) =>{
 
     var x = date.split('T')[0];
@@ -125,8 +126,30 @@ const GetMostRecentWords =async (airportCode)=>{
     return SplittedStringArray
 }
 
+
+const GetAverageBytheMonth = async(month,code,year) =>{
+    var sum = 0; 
+    var dateStart = year+'-'+month+'-01'+'T00:00:00.000Z';
+    var dateEnd = year+'-'+month+'-31'+'T23:59:59.999Z';
+    var data = await reviewCrud.findAirportsServiceReview(selector.byIataAndDateForFacilities(code,new Date(dateStart).toISOString(),new Date(dateEnd).toISOString()))
+   
+    if(data.length > 0)
+    {
+        data.filter(d => sum+= Number(d.staff) +Number(d.quality)+Number(d.facilities));
+    
+    var dat = (data.length)*3        
+    var avgForMonth = (sum /  dat).toFixed(2);
+    return avgForMonth ;
+    }
+    else
+    {
+        return 0;
+    }
+    
+}
 module.exports = {
     getDate,
     addMostRecentWords,
-    GetMostRecentWords
+    GetMostRecentWords,
+    GetAverageBytheMonth
 }

@@ -84,10 +84,21 @@ router.get('/GetMostRecentWords',[
 }
 ,reviewController.GetMostRecentWords)
 
+router.get('/GetTotalAverageOfMonthByIata',[
+    query('code').isString().notEmpty().trim().escape(),
+    query('month').isString().notEmpty().trim().escape(),
+    query('year').isString().notEmpty().trim().escape()
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({errors: errors.array()});
+    }
+    next();
+}
+,reviewController.GetTotalAverageOfMonthByIata)
 
-//GET /AirportAverageDailyAssistance/{startDate, endDate, IATA}
-//GET /AirportAverageDailyQuality/{startDate, endDate, IATA}
-//GET /AirportAverageDailyRating/{startDate, endDate, IATA}
-//GET /AirportThreeMonthData/{months, IATA}
+
+//Total average value for month by the airport code and percentage increment and decerement 
+
 
 module.exports = router;
