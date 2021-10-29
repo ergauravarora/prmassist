@@ -1,3 +1,403 @@
 {
-    
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "PRMAssist Support Microservice REST API",
+    "description": "API for the Microservice for saving feedback/contact us/testers"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/user"
+    }
+  ],
+  "components": {
+    "parameters": {},
+    "responses": {
+      "InternalError": {
+        "description": "Server error",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Invalid or missing fields",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Resource does not exist",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Validation error (e.g. Required field missing)",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NoContent": {
+        "description": "no content"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": ["errors"],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ErrorDetail" }
+          }
+        }
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Value containing error"
+          },
+          "msg": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "param": {
+            "type": "string",
+            "description": "Parameter containing error"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location of error in HTTP request"
+          }
+        }
+      },
+      "registerUser": {
+        "type": "object",
+        "required": [
+          "personalDetail",
+          "payments",
+          "travelCompanions",
+          "travelDocuments",
+          "bookingHistory",
+          "qrCode"
+        ],
+        "properties": {
+          "personalDetail": {
+            "type": "object",
+            "$ref": "#/components/schemas/personalDetails",
+            "description": "Personal Detail"
+          },
+          "payments": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/payments" },
+            "description": "payments Detail"
+          },
+          "travelCompanions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/travelCompanions" },
+            "description": "travelCompanions Detail"
+          },
+          "travelDocuments": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/travelDocuments" },
+            "description": "travelDocuments Detail"
+          },
+          "bookingHistory": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/bookingHistory" },
+            "description": "bookingHistory Detail"
+          },
+          "qrCode": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/qrCode" },
+            "description": "qrCode Detail"
+          }
+        }
+      },
+      "personalDetails": {
+        "type": "object",
+        "required": ["fullName", "email", "phoneNumber"],
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "full name of user",
+            "example": "Gaurav arora"
+          },
+          "email": {
+            "type": "string",
+            "description": "email of user",
+            "example": "agaurav546@gmail.com"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "phoneNumber of user",
+            "example": "+91 8223886899"
+          }
+        }
+      },
+      "payments": {
+        "type": "object",
+        "required": [
+          "cardNumber",
+          "expiry",
+          "ccv",
+          "cardHolderName",
+          "postalCode"
+        ],
+        "properties": {
+          "cardNumber": {
+            "type": "string",
+            "description": "card Number of user",
+            "example": "0000 0000 0000"
+          },
+          "expiry": {
+            "type": "string",
+            "description": "expiry of user",
+            "example": "02/2021"
+          },
+          "ccv": {
+            "type": "string",
+            "description": "ccv of user",
+            "example": "012"
+          },
+          "cardHolderName": {
+            "type": "string",
+            "description": "cardHolderName of user",
+            "example": "Gaurav arora"
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "postalCode of user",
+            "example": "456224"
+          }
+        }
+      },
+      "travelCompanions": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "secondName",
+          "nickname",
+          "email",
+          "phoneNumber"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "first Name of user",
+            "example": "firstName"
+          },
+          "secondName": {
+            "type": "string",
+            "description": "second Name of user",
+            "example": "secondName"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "nickname of user",
+            "example": "nickname"
+          },
+          "email": {
+            "type": "string",
+            "description": "email of user",
+            "example": "email"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "phoneNumber of user",
+            "example": "phoneNumber"
+          }
+        }
+      },
+      "travelDocuments": {
+        "type": "object",
+        "required": [
+          "fullName",
+          "passportNumber",
+          "expiryDate",
+          "countryOfBirth"
+        ],
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "full Name of user",
+            "example": "fullName"
+          },
+          "passportNumber": {
+            "type": "string",
+            "description": "passportNumber of user",
+            "example": "passportNumber"
+          },
+          "expiryDate": {
+            "type": "string",
+            "description": "expiryDate of user",
+            "example": "expiryDate"
+          },
+          "countryOfBirth": {
+            "type": "string",
+            "description": "countryOfBirth of user",
+            "example": "countryOfBirth"
+          }
+        }
+      },
+      "bookingHistory": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+      },
+      "qrCode": {
+        "type": "object",
+        "required": [],
+        "properties": {}
+      }
+    }
+  },
+  "paths": {
+    "/registerUser": {
+      "post": {
+        "summary": "Save a User details",
+        "operationId": "registerUser",
+        "tags": ["registerUser"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registerUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a Reward details",
+        "operationId": "updatereward",
+        "tags": ["reward"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/rewardDetailsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a Reward details",
+        "operationId": "deletereward",
+        "tags": ["reward"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/getUser": {
+      "get": {
+        "summary": "Get Reward details",
+        "operationId": "getreward",
+        "tags": ["reward"],
+        "requestBody": {
+          "content": {
+            "application/json": {}
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/updateUser": {}
+  }
 }
