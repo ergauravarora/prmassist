@@ -1,4 +1,4 @@
-const userFields = ["personalDetail","payments","travelCompanions","travelDocuments","bookingHistory","qrCode","_rev","_id"]
+const userFields = ["fcmToken","personalDetail","payments","travelCompanions","travelDocuments","bookingHistory","qrCode","_rev","_id"]
 module.exports = {
     byId: (id) => {
         return {

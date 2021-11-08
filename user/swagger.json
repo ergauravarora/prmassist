@@ -8,6 +8,9 @@
   "servers": [
     {
       "url": "http://localhost:8080/user"
+    },
+    {
+      "url": "http://localhost:8080/notification"
     }
   ],
   "components": {
@@ -268,6 +271,50 @@
         "type": "object",
         "required": [],
         "properties": {}
+      },
+      "storeToken":{
+        "type": "object",
+        "required": [
+          "userId",
+          "fcmToken"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "user Id",
+            "example": "aecdadd27e55f52c714ec4fffe105d0a"
+          },
+          "fcmToken": {
+            "type": "string",
+            "description": "fcm Token",
+            "example": "dLxr0LOcRTCNkoOIRxD2h9:APA91bFOrmZNjM0xRGOwKikmrhNeU96KOqJ3E50TRQXnekdaebi4eucAxKiGBAnFRj3y_WZyy2l_xmJd6vF-uKTRDyiF6W_5sE99ScjmQxJxX1Z-wusUjuiPgfbURA0EQYO6k3HKUBb-"
+          }
+        }
+      },
+      "sendNotification":{
+        "type": "object",
+        "required": [
+          "userId",
+          "notificationTitle",
+          "notificationText"
+        ],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "user Id",
+            "example": "aecdadd27e55f52c714ec4fffe105d0a"
+          },
+          "notificationTitle": {
+            "type": "string",
+            "description": "notification Title",
+            "example": "test title"
+          },
+          "notificationText":{
+            "type": "string",
+            "description": "notification Text",
+            "example": "test text body"
+          }
+        }
       }
     }
   },
@@ -398,6 +445,68 @@
         }
       }
     },
-    "/updateUser": {}
+    "/updateUser": {},
+    "/storeToken":{
+      "post": {
+        "summary": "Save a Firebase cloud messaging token to user",
+        "operationId": "storeToken",
+        "tags": ["storeToken"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/storeToken"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/sendNotification":{
+      "post": {
+        "summary": "send Notifications to users devices",
+        "operationId": "sendNotification",
+        "tags": ["sendNotification"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/sendNotification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
   }
 }
