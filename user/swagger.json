@@ -275,13 +275,13 @@
       "storeToken":{
         "type": "object",
         "required": [
-          "userId",
+          "email",
           "fcmToken"
         ],
         "properties": {
-          "userId": {
+          "email": {
             "type": "string",
-            "description": "user Id",
+            "description": "email",
             "example": "aecdadd27e55f52c714ec4fffe105d0a"
           },
           "fcmToken": {
@@ -294,15 +294,15 @@
       "sendNotification":{
         "type": "object",
         "required": [
-          "userId",
+          "email",
           "notificationTitle",
           "notificationText"
         ],
         "properties": {
-          "userId": {
+          "email": {
             "type": "string",
-            "description": "user Id",
-            "example": "aecdadd27e55f52c714ec4fffe105d0a"
+            "description": "email",
+            "example": "agaurav546@gmail.com"
           },
           "notificationTitle": {
             "type": "string",

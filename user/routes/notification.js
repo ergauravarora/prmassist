@@ -4,7 +4,7 @@ const notificationController = require("../controllers/notificationController");
 const { body, validationResult,query } = require('express-validator');
 
 router.post('/storeToken', [
-    body('userId').isString().notEmpty().trim().escape(),
+    body('email').isString().notEmpty().trim().escape(),
     body('fcmToken').isString().notEmpty().trim().escape(),
     
 ], (req, res, next) => {
@@ -16,7 +16,7 @@ router.post('/storeToken', [
 }, notificationController.StoreToken);
 
 router.post('/sendNotification', [
-    body('userId').isString().notEmpty().trim().escape(),
+    body('email').isString().notEmpty().trim().escape(),
     body('notificationTitle').isString().notEmpty().trim().escape(),
     body('notificationText').isString().notEmpty().trim().escape(),
     

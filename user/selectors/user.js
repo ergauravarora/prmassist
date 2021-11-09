@@ -7,6 +7,14 @@ module.exports = {
             },
             fields : userFields
         };
-    }
+    },
+    byEmail: (email) => {
+        return {
+            selector : {
+              "personalDetail.email" :{ "$eq" :email  } 
+            },
+            fields : userFields
+        }
+     }
 
 };
