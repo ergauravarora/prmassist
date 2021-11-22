@@ -15,6 +15,14 @@ module.exports = {
             },
             fields : userFields
         }
-     }
+     },
+     byFirebaseId: (firebaseId) => {
+        return {
+            selector: {
+                "personalDetail.firebaseId" :{ "$eq" :firebaseId  } 
+            },
+            fields: userFields
+        };
+    },
 
 };

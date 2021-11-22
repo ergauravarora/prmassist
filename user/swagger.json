@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "PRMAssist Support Microservice REST API",
-    "description": "API for the Microservice for saving feedback/contact us/testers"
+    "description": "API for the Microservice for User Management , Storing Token and Send Notification"
   },
   "servers": [
     {
@@ -138,6 +138,10 @@
       },
       "personalDetails": {
         "type": "object",
+        "required": ["personalDetails"],
+        "properties": {
+          "personalDetail":{
+            "type": "object",
         "required": ["fullName", "email", "phoneNumber"],
         "properties": {
           "fullName": {
@@ -155,6 +159,9 @@
             "description": "phoneNumber of user",
             "example": "+91 8223886899"
           }
+        }
+          }
+         
         }
       },
       "payments": {
@@ -269,8 +276,22 @@
       },
       "qrCode": {
         "type": "object",
-        "required": [],
-        "properties": {}
+        "required": [
+          "qrImage",
+          "flightNumber"
+        ],
+        "properties": {
+          "qrImage": {
+            "type": "file",
+            "description": "Qr Code",
+            "consumes":"multipart/form-data"
+          },
+          "flightNumber": {
+            "type": "string",
+            "description": "passportNumber of user",
+            "example": "passportNumber"
+          }
+        }
       },
       "storeToken":{
         "type": "object",
@@ -323,84 +344,15 @@
       "post": {
         "summary": "Save a User details",
         "operationId": "registerUser",
-        "tags": ["registerUser"],
+        "tags": ["Add a new User / Register new User"],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/registerUser"
+                "$ref": "#/components/schemas/personalDetails"
               }
             }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Saved Tester",
-            "content": {
-              "application/json": {}
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a Reward details",
-        "operationId": "updatereward",
-        "tags": ["reward"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/rewardDetailsUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Saved Tester",
-            "content": {
-              "application/json": {}
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a Reward details",
-        "operationId": "deletereward",
-        "tags": ["reward"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {}
           }
         },
         "responses": {
@@ -421,9 +373,17 @@
     },
     "/getUser": {
       "get": {
-        "summary": "Get Reward details",
-        "operationId": "getreward",
-        "tags": ["reward"],
+        "summary": "Get User details",
+        "operationId": "getuser",
+        "tags": ["Get User Details"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {}
@@ -445,12 +405,50 @@
         }
       }
     },
-    "/updateUser": {},
+    "/updateUser": {
+      "put":{
+      "summary": "Update User detail",
+      "operationId": "putUser",
+      "tags": ["Update users details "],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "query",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/personalDetails"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Saved Tester",
+          "content": {
+            "application/json": {}
+          }
+        },
+        "400": {
+          "$ref": "#/components/responses/BadRequest"
+        },
+        "500": {
+          "$ref": "#/components/responses/InternalError"
+        }
+      }
+    }
+    },
     "/storeToken":{
       "post": {
         "summary": "Save a Firebase cloud messaging token to user",
         "operationId": "storeToken",
-        "tags": ["storeToken"],
+        "tags": ["Save a Firebase cloud messaging token to user"],
         "requestBody": {
           "required": true,
           "content": {
@@ -481,7 +479,7 @@
       "post": {
         "summary": "send Notifications to users devices",
         "operationId": "sendNotification",
-        "tags": ["sendNotification"],
+        "tags": ["Send Push Notifications to users Registered devices"],
         "requestBody": {
           "required": true,
           "content": {
@@ -495,6 +493,418 @@
         "responses": {
           "201": {
             "description": "Saved Tester",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/AddUserToTravelCompanionList":{
+      "post": {
+        "summary": "Add User To Companion List",
+        "operationId": "posttravelCompanions",
+        "tags": ["Add new member to Travel Companions list for user"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/travelCompanions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Travel Companions added Successfully.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/GetTravelCompanionList":{
+      "get": {
+        "summary": "Save a Travel Companion details",
+        "operationId": "GetTravelCompanionList",
+        "tags": ["Get Travel Companion List for User"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Travel Companion.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/DeleteTravelCompanionEntry":{
+      "delete": {
+        "summary": "Delete Travel Companion Entry for user",
+        "operationId": "DeleteTravelCompanionEntry",
+        "tags": ["Delete Travel Companion Entry"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Travel Companion deleted successfully",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/AddPayementMethod":{
+      "post": {
+        "summary": "Add Payment Method",
+        "operationId": "postAddPayementMethod",
+        "tags": ["Add new Payment Method in list for user"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment Method added Successfully.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/GetPayementMethods":{
+      "get": {
+        "summary": "Get Payment details",
+        "operationId": "GetPayementMethods",
+        "tags": ["Get Payment Method List for User"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Payments.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/DeletePayementMethod":{
+      "delete": {
+        "summary": "Delete Payment for user",
+        "operationId": "DeletePayementMethod",
+        "tags": ["Delete Payment record for user"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment deleted successfully",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/AddTravelDocument":{
+      "post": {
+        "summary": "Add Travel Document",
+        "operationId": "postAddTravelDocument",
+        "tags": ["Add new Travel Document in list for user"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/travelDocuments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Travel Document added Successfully.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/GetTravelDocuments":{
+      "get": {
+        "summary": "Travel Document details",
+        "operationId": "GetTravelDocuments",
+        "tags": ["Get Travel Docuemnt List for User"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Travel Companion.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/DeleteTravelDocument":{
+      "delete": {
+        "summary": "Delete Travel Document Entry for user",
+        "operationId": "DeleteTravelDocumentEntry",
+        "tags": ["Delete Travel Document Entry"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Travel Document deleted successfully",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/AddQrData":{
+      "post": {
+        "summary": "Add Filght QR Code",
+        "operationId": "postAddQrData",
+        "tags": ["Add new Filght QR Codet in list"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/qrCode"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Qr Code added Successfully.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/GetQrDatas":{
+      "get": {
+        "summary": "Get Qr details",
+        "operationId": "GetQrDatas",
+        "tags": ["Get Qr List for User"],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QR of Travel Companion.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/DeleteQrData":{
+      "delete": {
+        "summary": "Delete QR for user",
+        "operationId": "DeleteQrData",
+        "tags": ["Delete Qr Data "],
+        "parameters": [
+          {
+            "name": "firebaseid",
+            "in": "query",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QR deleted successfully",
             "content": {
               "application/json": {}
             }
